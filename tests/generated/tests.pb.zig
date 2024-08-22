@@ -29,6 +29,14 @@ pub const FixedSizes = struct {
     fixed64: u64 = 0,
     double: f64 = 0,
     float: f32 = 0,
+    pub const _data_struct = struct {
+        sfixed64: i64 = 0,
+        sfixed32: i32 = 0,
+        fixed32: u32 = 0,
+        fixed64: u64 = 0,
+        double: f64 = 0,
+        float: f32 = 0,
+    };
 
     pub const _desc_table = .{
         .sfixed64 = fd(1, .{ .FixedInt = .I64 }),
@@ -51,6 +59,9 @@ pub const TopLevelEnum = enum(i32) {
 
 pub const WithEnum = struct {
     value: SomeEnum = @enumFromInt(0),
+    pub const _data_struct = struct {
+        value: SomeEnum = @enumFromInt(0),
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -69,6 +80,9 @@ pub const WithEnum = struct {
 
 pub const WithEnumShadow = struct {
     value: SomeEnum = @enumFromInt(0),
+    pub const _data_struct = struct {
+        value: SomeEnum = @enumFromInt(0),
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -86,6 +100,9 @@ pub const WithEnumShadow = struct {
 
 pub const RepeatedEnum = struct {
     value: ArrayList(TopLevelEnum),
+    pub const _data_struct = struct {
+        value: ArrayList(TopLevelEnum),
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .List = .{ .Varint = .Simple } }),
@@ -105,6 +122,18 @@ pub const Packed = struct {
     uint64_list: ArrayList(u64),
     bool_list: ArrayList(bool),
     enum_list: ArrayList(TopLevelEnum),
+    pub const _data_struct = struct {
+        int32_list: ArrayList(i32),
+        uint32_list: ArrayList(u32),
+        sint32_list: ArrayList(i32),
+        float_list: ArrayList(f32),
+        double_list: ArrayList(f64),
+        int64_list: ArrayList(i64),
+        sint64_list: ArrayList(i64),
+        uint64_list: ArrayList(u64),
+        bool_list: ArrayList(bool),
+        enum_list: ArrayList(TopLevelEnum),
+    };
 
     pub const _desc_table = .{
         .int32_list = fd(1, .{ .PackedList = .{ .Varint = .Simple } }),
@@ -133,6 +162,18 @@ pub const UnPacked = struct {
     uint64_list: ArrayList(u64),
     bool_list: ArrayList(bool),
     enum_list: ArrayList(TopLevelEnum),
+    pub const _data_struct = struct {
+        int32_list: ArrayList(i32),
+        uint32_list: ArrayList(u32),
+        sint32_list: ArrayList(i32),
+        float_list: ArrayList(f32),
+        double_list: ArrayList(f64),
+        int64_list: ArrayList(i64),
+        sint64_list: ArrayList(i64),
+        uint64_list: ArrayList(u64),
+        bool_list: ArrayList(bool),
+        enum_list: ArrayList(TopLevelEnum),
+    };
 
     pub const _desc_table = .{
         .int32_list = fd(1, .{ .List = .{ .Varint = .Simple } }),
@@ -152,6 +193,9 @@ pub const UnPacked = struct {
 
 pub const WithSubmessages = struct {
     with_enum: ?WithEnum = null,
+    pub const _data_struct = struct {
+        with_enum: ?WithEnum._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .with_enum = fd(1, .{ .SubMessage = {} }),
@@ -162,6 +206,9 @@ pub const WithSubmessages = struct {
 
 pub const WithStrings = struct {
     name: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        name: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -172,6 +219,9 @@ pub const WithStrings = struct {
 
 pub const WithRepeatedStrings = struct {
     name: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        name: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .{ .List = .String }),

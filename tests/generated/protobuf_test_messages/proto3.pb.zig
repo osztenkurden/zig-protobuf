@@ -196,6 +196,149 @@ pub const TestAllTypesProto3 = struct {
             .oneof_null_value = fd(120, .{ .Varint = .Simple }),
         };
     };
+    pub const _data_struct = struct {
+        optional_int32: i32 = 0,
+        optional_int64: i64 = 0,
+        optional_uint32: u32 = 0,
+        optional_uint64: u64 = 0,
+        optional_sint32: i32 = 0,
+        optional_sint64: i64 = 0,
+        optional_fixed32: u32 = 0,
+        optional_fixed64: u64 = 0,
+        optional_sfixed32: i32 = 0,
+        optional_sfixed64: i64 = 0,
+        optional_float: f32 = 0,
+        optional_double: f64 = 0,
+        optional_bool: bool = false,
+        optional_string: []const u8 = "",
+        optional_bytes: []const u8 = "",
+        optional_nested_message: ?NestedMessage._data_struct = null,
+        optional_foreign_message: ?ForeignMessage._data_struct = null,
+        optional_nested_enum: NestedEnum = @enumFromInt(0),
+        optional_foreign_enum: ForeignEnum = @enumFromInt(0),
+        optional_aliased_enum: AliasedEnum = @enumFromInt(0),
+        optional_string_piece: []const u8 = "",
+        optional_cord: []const u8 = "",
+        repeated_int32: ArrayList(i32),
+        repeated_int64: ArrayList(i64),
+        repeated_uint32: ArrayList(u32),
+        repeated_uint64: ArrayList(u64),
+        repeated_sint32: ArrayList(i32),
+        repeated_sint64: ArrayList(i64),
+        repeated_fixed32: ArrayList(u32),
+        repeated_fixed64: ArrayList(u64),
+        repeated_sfixed32: ArrayList(i32),
+        repeated_sfixed64: ArrayList(i64),
+        repeated_float: ArrayList(f32),
+        repeated_double: ArrayList(f64),
+        repeated_bool: ArrayList(bool),
+        repeated_string: ArrayList([]const u8),
+        repeated_bytes: ArrayList([]const u8),
+        repeated_nested_message: ArrayList(NestedMessage._data_struct),
+        repeated_foreign_message: ArrayList(ForeignMessage._data_struct),
+        repeated_nested_enum: ArrayList(NestedEnum),
+        repeated_foreign_enum: ArrayList(ForeignEnum),
+        repeated_string_piece: ArrayList([]const u8),
+        repeated_cord: ArrayList([]const u8),
+        packed_int32: ArrayList(i32),
+        packed_int64: ArrayList(i64),
+        packed_uint32: ArrayList(u32),
+        packed_uint64: ArrayList(u64),
+        packed_sint32: ArrayList(i32),
+        packed_sint64: ArrayList(i64),
+        packed_fixed32: ArrayList(u32),
+        packed_fixed64: ArrayList(u64),
+        packed_sfixed32: ArrayList(i32),
+        packed_sfixed64: ArrayList(i64),
+        packed_float: ArrayList(f32),
+        packed_double: ArrayList(f64),
+        packed_bool: ArrayList(bool),
+        packed_nested_enum: ArrayList(NestedEnum),
+        unpacked_int32: ArrayList(i32),
+        unpacked_int64: ArrayList(i64),
+        unpacked_uint32: ArrayList(u32),
+        unpacked_uint64: ArrayList(u64),
+        unpacked_sint32: ArrayList(i32),
+        unpacked_sint64: ArrayList(i64),
+        unpacked_fixed32: ArrayList(u32),
+        unpacked_fixed64: ArrayList(u64),
+        unpacked_sfixed32: ArrayList(i32),
+        unpacked_sfixed64: ArrayList(i64),
+        unpacked_float: ArrayList(f32),
+        unpacked_double: ArrayList(f64),
+        unpacked_bool: ArrayList(bool),
+        unpacked_nested_enum: ArrayList(NestedEnum),
+        map_int32_int32: ArrayList(MapInt32Int32Entry._data_struct),
+        map_int64_int64: ArrayList(MapInt64Int64Entry._data_struct),
+        map_uint32_uint32: ArrayList(MapUint32Uint32Entry._data_struct),
+        map_uint64_uint64: ArrayList(MapUint64Uint64Entry._data_struct),
+        map_sint32_sint32: ArrayList(MapSint32Sint32Entry._data_struct),
+        map_sint64_sint64: ArrayList(MapSint64Sint64Entry._data_struct),
+        map_fixed32_fixed32: ArrayList(MapFixed32Fixed32Entry._data_struct),
+        map_fixed64_fixed64: ArrayList(MapFixed64Fixed64Entry._data_struct),
+        map_sfixed32_sfixed32: ArrayList(MapSfixed32Sfixed32Entry._data_struct),
+        map_sfixed64_sfixed64: ArrayList(MapSfixed64Sfixed64Entry._data_struct),
+        map_int32_float: ArrayList(MapInt32FloatEntry._data_struct),
+        map_int32_double: ArrayList(MapInt32DoubleEntry._data_struct),
+        map_bool_bool: ArrayList(MapBoolBoolEntry._data_struct),
+        map_string_string: ArrayList(MapStringStringEntry._data_struct),
+        map_string_bytes: ArrayList(MapStringBytesEntry._data_struct),
+        map_string_nested_message: ArrayList(MapStringNestedMessageEntry._data_struct),
+        map_string_foreign_message: ArrayList(MapStringForeignMessageEntry._data_struct),
+        map_string_nested_enum: ArrayList(MapStringNestedEnumEntry._data_struct),
+        map_string_foreign_enum: ArrayList(MapStringForeignEnumEntry._data_struct),
+        optional_bool_wrapper: ?google_protobuf.BoolValue._data_struct = null,
+        optional_int32_wrapper: ?google_protobuf.Int32Value._data_struct = null,
+        optional_int64_wrapper: ?google_protobuf.Int64Value._data_struct = null,
+        optional_uint32_wrapper: ?google_protobuf.UInt32Value._data_struct = null,
+        optional_uint64_wrapper: ?google_protobuf.UInt64Value._data_struct = null,
+        optional_float_wrapper: ?google_protobuf.FloatValue._data_struct = null,
+        optional_double_wrapper: ?google_protobuf.DoubleValue._data_struct = null,
+        optional_string_wrapper: ?google_protobuf.StringValue._data_struct = null,
+        optional_bytes_wrapper: ?google_protobuf.BytesValue._data_struct = null,
+        repeated_bool_wrapper: ArrayList(google_protobuf.BoolValue._data_struct),
+        repeated_int32_wrapper: ArrayList(google_protobuf.Int32Value._data_struct),
+        repeated_int64_wrapper: ArrayList(google_protobuf.Int64Value._data_struct),
+        repeated_uint32_wrapper: ArrayList(google_protobuf.UInt32Value._data_struct),
+        repeated_uint64_wrapper: ArrayList(google_protobuf.UInt64Value._data_struct),
+        repeated_float_wrapper: ArrayList(google_protobuf.FloatValue._data_struct),
+        repeated_double_wrapper: ArrayList(google_protobuf.DoubleValue._data_struct),
+        repeated_string_wrapper: ArrayList(google_protobuf.StringValue._data_struct),
+        repeated_bytes_wrapper: ArrayList(google_protobuf.BytesValue._data_struct),
+        optional_duration: ?google_protobuf.Duration._data_struct = null,
+        optional_timestamp: ?google_protobuf.Timestamp._data_struct = null,
+        optional_field_mask: ?google_protobuf.FieldMask._data_struct = null,
+        optional_struct: ?google_protobuf.Struct._data_struct = null,
+        optional_any: ?google_protobuf.Any._data_struct = null,
+        optional_value: ?google_protobuf.Value._data_struct = null,
+        optional_null_value: google_protobuf.NullValue = @enumFromInt(0),
+        repeated_duration: ArrayList(google_protobuf.Duration._data_struct),
+        repeated_timestamp: ArrayList(google_protobuf.Timestamp._data_struct),
+        repeated_fieldmask: ArrayList(google_protobuf.FieldMask._data_struct),
+        repeated_struct: ArrayList(google_protobuf.Struct._data_struct),
+        repeated_any: ArrayList(google_protobuf.Any._data_struct),
+        repeated_value: ArrayList(google_protobuf.Value._data_struct),
+        repeated_list_value: ArrayList(google_protobuf.ListValue._data_struct),
+        fieldname1: i32 = 0,
+        field_name2: i32 = 0,
+        _field_name3: i32 = 0,
+        field__name4_: i32 = 0,
+        field0name5: i32 = 0,
+        field_0_name6: i32 = 0,
+        fieldName7: i32 = 0,
+        FieldName8: i32 = 0,
+        field_Name9: i32 = 0,
+        Field_Name10: i32 = 0,
+        FIELD_NAME11: i32 = 0,
+        FIELD_name12: i32 = 0,
+        __field_name13: i32 = 0,
+        __Field_name14: i32 = 0,
+        field__name15: i32 = 0,
+        field__Name16: i32 = 0,
+        field_name17__: i32 = 0,
+        Field_name18__: i32 = 0,
+        oneof_field: ?oneof_field_union,
+    };
 
     pub const _desc_table = .{
         .optional_int32 = fd(1, .{ .Varint = .Simple }),
@@ -358,6 +501,9 @@ pub const TestAllTypesProto3 = struct {
 
     pub const NestedMessage = struct {
         a: i32 = 0,
+        pub const _data_struct = struct {
+            a: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .a = fd(1, .{ .Varint = .Simple }),
@@ -369,6 +515,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapInt32Int32Entry = struct {
         key: i32 = 0,
         value: i32 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -381,6 +531,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapInt64Int64Entry = struct {
         key: i64 = 0,
         value: i64 = 0,
+        pub const _data_struct = struct {
+            key: i64 = 0,
+            value: i64 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -393,6 +547,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapUint32Uint32Entry = struct {
         key: u32 = 0,
         value: u32 = 0,
+        pub const _data_struct = struct {
+            key: u32 = 0,
+            value: u32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -405,6 +563,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapUint64Uint64Entry = struct {
         key: u64 = 0,
         value: u64 = 0,
+        pub const _data_struct = struct {
+            key: u64 = 0,
+            value: u64 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -417,6 +579,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapSint32Sint32Entry = struct {
         key: i32 = 0,
         value: i32 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .ZigZagOptimized }),
@@ -429,6 +595,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapSint64Sint64Entry = struct {
         key: i64 = 0,
         value: i64 = 0,
+        pub const _data_struct = struct {
+            key: i64 = 0,
+            value: i64 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .ZigZagOptimized }),
@@ -441,6 +611,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapFixed32Fixed32Entry = struct {
         key: u32 = 0,
         value: u32 = 0,
+        pub const _data_struct = struct {
+            key: u32 = 0,
+            value: u32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .FixedInt = .I32 }),
@@ -453,6 +627,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapFixed64Fixed64Entry = struct {
         key: u64 = 0,
         value: u64 = 0,
+        pub const _data_struct = struct {
+            key: u64 = 0,
+            value: u64 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .FixedInt = .I64 }),
@@ -465,6 +643,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapSfixed32Sfixed32Entry = struct {
         key: i32 = 0,
         value: i32 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .FixedInt = .I32 }),
@@ -477,6 +659,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapSfixed64Sfixed64Entry = struct {
         key: i64 = 0,
         value: i64 = 0,
+        pub const _data_struct = struct {
+            key: i64 = 0,
+            value: i64 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .FixedInt = .I64 }),
@@ -489,6 +675,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapInt32FloatEntry = struct {
         key: i32 = 0,
         value: f32 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: f32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -501,6 +691,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapInt32DoubleEntry = struct {
         key: i32 = 0,
         value: f64 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: f64 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -513,6 +707,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapBoolBoolEntry = struct {
         key: bool = false,
         value: bool = false,
+        pub const _data_struct = struct {
+            key: bool = false,
+            value: bool = false,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -525,6 +723,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapStringStringEntry = struct {
         key: ManagedString = .Empty,
         value: ManagedString = .Empty,
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: []const u8 = "",
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -537,6 +739,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapStringBytesEntry = struct {
         key: ManagedString = .Empty,
         value: ManagedString = .Empty,
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: []const u8 = "",
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -549,6 +755,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapStringNestedMessageEntry = struct {
         key: ManagedString = .Empty,
         value: ?TestAllTypesProto3.NestedMessage = null,
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: ?TestAllTypesProto3.NestedMessage._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -561,6 +771,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapStringForeignMessageEntry = struct {
         key: ManagedString = .Empty,
         value: ?ForeignMessage = null,
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: ?ForeignMessage._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -573,6 +787,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapStringNestedEnumEntry = struct {
         key: ManagedString = .Empty,
         value: TestAllTypesProto3.NestedEnum = @enumFromInt(0),
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: TestAllTypesProto3.NestedEnum = @enumFromInt(0),
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -585,6 +803,10 @@ pub const TestAllTypesProto3 = struct {
     pub const MapStringForeignEnumEntry = struct {
         key: ManagedString = .Empty,
         value: ForeignEnum = @enumFromInt(0),
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: ForeignEnum = @enumFromInt(0),
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -599,6 +821,9 @@ pub const TestAllTypesProto3 = struct {
 
 pub const ForeignMessage = struct {
     c: i32 = 0,
+    pub const _data_struct = struct {
+        c: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .c = fd(1, .{ .Varint = .Simple }),
@@ -608,12 +833,16 @@ pub const ForeignMessage = struct {
 };
 
 pub const NullHypothesisProto3 = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const EnumOnlyProto3 = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub const Bool = enum(i32) {

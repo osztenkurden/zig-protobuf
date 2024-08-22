@@ -19,6 +19,18 @@ pub const LongsMessage = struct {
     sint64_field_max: i64 = 0,
     uint64_field_min: u64 = 0,
     uint64_field_max: u64 = 0,
+    pub const _data_struct = struct {
+        fixed64_field_min: u64 = 0,
+        fixed64_field_max: u64 = 0,
+        int64_field_min: i64 = 0,
+        int64_field_max: i64 = 0,
+        sfixed64_field_min: i64 = 0,
+        sfixed64_field_max: i64 = 0,
+        sint64_field_min: i64 = 0,
+        sint64_field_max: i64 = 0,
+        uint64_field_min: u64 = 0,
+        uint64_field_max: u64 = 0,
+    };
 
     pub const _desc_table = .{
         .fixed64_field_min = fd(1, .{ .FixedInt = .I64 }),

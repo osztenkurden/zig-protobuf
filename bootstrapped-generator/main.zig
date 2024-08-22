@@ -117,6 +117,9 @@ const GenerationContext = struct {
             // collect all imports from all files sharing the same package
             var importedPackages = std.StringHashMap(bool).init(allocator);
 
+            // collect all imports from all files sharing the same package
+          //  var importedNamespaces = std.StringHashMap(bool).init(allocator);
+
             for (self.req.proto_file.items) |file| {
                 const pkgIdentifer = if (file.package) |p| p.getSlice() else file.name.?.getSlice();
                 if (name.eqlString(pkgIdentifer)) {
@@ -131,6 +134,11 @@ const GenerationContext = struct {
                                         is_public_dep = true;
                                     }
                                 }
+                                // if(item.package) |p| {
+                                //     try importedPackages.put(p.getSlice(), is_public_dep);
+                                // } else {
+                                //     try importedNamespaces.put(item.name.?.getSlice(), is_public_dep);
+                                // }
                                 const keyForImport = if (item.package) |p| p.getSlice() else item.name.?.getSlice();
                                 try importedPackages.put(keyForImport, is_public_dep);
                             }
@@ -149,6 +157,17 @@ const GenerationContext = struct {
                     try list.append(try std.fmt.allocPrint(allocator, "{s} {!s} = @import(\"{!s}\");\n", .{ optional_pub_directive, self.escapeFqn(package.key_ptr.*), self.resolvePath(name.buf, package.key_ptr.*) }));
                 }
             }
+
+            // var iN = importedNamespaces.iterator();
+            // while (iN.next()) |package| {
+            //     if (!std.mem.eql(u8, package.key_ptr.*, name.buf)) {
+            //         try list.append(try std.fmt.allocPrint(allocator, "/// import package {?s}\n", .{package.key_ptr.*}));
+
+            //         const optional_pub_directive: []const u8 = if (package.value_ptr.*) "pub usingnamespace" else "usingnamespace";
+
+            //         try list.append(try std.fmt.allocPrint(allocator, "{s} @import(\"{!s}\");\n", .{ optional_pub_directive, self.resolvePath(name.buf, package.key_ptr.*) }));
+            //     }
+            // }
 
             entry.value_ptr.* = list;
         }
@@ -308,7 +327,7 @@ const GenerationContext = struct {
         }
     }
 
-    fn getFieldType(ctx: *Self, fqn: FullName, file: descriptor.FileDescriptorProto, field: descriptor.FieldDescriptorProto, is_union: bool) !string {
+    fn getFieldType(ctx: *Self, fqn: FullName, file: descriptor.FileDescriptorProto, field: descriptor.FieldDescriptorProto, is_union: bool, struct_only: bool) !string {
         var prefix: string = "";
         var postfix: string = "";
         const repeated = ctx.isRepeated(field);
@@ -345,10 +364,22 @@ const GenerationContext = struct {
             },
         };
 
+        if(struct_only){
+            switch(t){
+                .TYPE_STRING, .TYPE_BYTES => {
+                    return try std.mem.concat(allocator, u8, &.{ prefix, "[]const u8", postfix });
+                },
+                .TYPE_MESSAGE => {
+                    return try std.mem.concat(allocator, u8, &.{ prefix, infix, "._data_struct", postfix });
+                },
+                else => {} 
+            }
+        }
+
         return try std.mem.concat(allocator, u8, &.{ prefix, infix, postfix });
     }
 
-    fn getFieldDefault(ctx: *Self, field: descriptor.FieldDescriptorProto, file: descriptor.FileDescriptorProto, nullable: bool) !?string {
+    fn getFieldDefault(ctx: *Self, field: descriptor.FieldDescriptorProto, file: descriptor.FileDescriptorProto, nullable: bool, struct_only: bool) !?string {
         // ArrayLists need to be initialized
         const repeated = ctx.isRepeated(field);
         if (repeated) return null;
@@ -376,7 +407,12 @@ const GenerationContext = struct {
                 .TYPE_DOUBLE,
                 => "0",
                 .TYPE_BOOL => "false",
-                .TYPE_STRING, .TYPE_BYTES => ".Empty",
+                .TYPE_STRING, .TYPE_BYTES => {
+                    if(struct_only){
+                        return "\"\"";
+                    }
+                    return ".Empty";
+                },
                 .TYPE_ENUM => "@enumFromInt(0)",
                 else => null,
             };
@@ -388,10 +424,17 @@ const GenerationContext = struct {
             .TYPE_SINT32, .TYPE_SFIXED32, .TYPE_INT32, .TYPE_UINT32, .TYPE_FIXED32, .TYPE_INT64, .TYPE_SINT64, .TYPE_SFIXED64, .TYPE_UINT64, .TYPE_FIXED64, .TYPE_BOOL => field.default_value.?.getSlice(),
             .TYPE_FLOAT => if (std.mem.eql(u8, field.default_value.?.getSlice(), "inf")) "std.math.inf(f32)" else if (std.mem.eql(u8, field.default_value.?.getSlice(), "-inf")) "-std.math.inf(f32)" else if (std.mem.eql(u8, field.default_value.?.getSlice(), "nan")) "std.math.nan(f32)" else field.default_value.?.getSlice(),
             .TYPE_DOUBLE => if (std.mem.eql(u8, field.default_value.?.getSlice(), "inf")) "std.math.inf(f64)" else if (std.mem.eql(u8, field.default_value.?.getSlice(), "-inf")) "-std.math.inf(f64)" else if (std.mem.eql(u8, field.default_value.?.getSlice(), "nan")) "std.math.nan(f64)" else field.default_value.?.getSlice(),
-            .TYPE_STRING, .TYPE_BYTES => if (field.default_value.?.isEmpty())
-                ".Empty"
-            else
-                try std.mem.concat(allocator, u8, &.{ "ManagedString.static(", try formatSliceEscapeImpl(field.default_value.?.getSlice()), ")" }),
+            .TYPE_STRING, .TYPE_BYTES => if (field.default_value.?.isEmpty()){
+                if(struct_only){
+                    return "\"\"";
+                }
+                return ".Empty";
+            } else {
+                if(struct_only){
+                    return try formatSliceEscapeImpl(field.default_value.?.getSlice());
+                }
+                return try std.mem.concat(allocator, u8, &.{ "ManagedString.static(", try formatSliceEscapeImpl(field.default_value.?.getSlice()), ")" });
+            },
             .TYPE_ENUM => try std.mem.concat(allocator, u8, &.{ ".", field.default_value.?.getSlice() }),
             else => null,
         };
@@ -436,14 +479,14 @@ const GenerationContext = struct {
         try list.append(try std.fmt.allocPrint(allocator, format, .{ name, field.number, descStr }));
     }
 
-    fn generateFieldDeclaration(ctx: *Self, list: *std.ArrayList(string), fqn: FullName, file: descriptor.FileDescriptorProto, message: descriptor.DescriptorProto, field: descriptor.FieldDescriptorProto, is_union: bool) !void {
+    fn generateFieldDeclaration(ctx: *Self, list: *std.ArrayList(string), fqn: FullName, file: descriptor.FileDescriptorProto, message: descriptor.DescriptorProto, field: descriptor.FieldDescriptorProto, is_union: bool, struct_only: bool) !void {
         _ = message;
 
-        const type_str = try ctx.getFieldType(fqn, file, field, is_union);
+        const type_str = try ctx.getFieldType(fqn, file, field, is_union, struct_only);
         const field_name = try ctx.getFieldName(field);
         const nullable = type_str[0] == '?';
 
-        if (try ctx.getFieldDefault(field, file, nullable)) |default_value| {
+        if (try ctx.getFieldDefault(field, file, nullable, struct_only)) |default_value| {
             try list.append(try std.fmt.allocPrint(allocator, "    {s}: {s} = {s},\n", .{ field_name, type_str, default_value }));
         } else {
             try list.append(try std.fmt.allocPrint(allocator, "    {s}: {s},\n", .{ field_name, type_str }));
@@ -477,7 +520,7 @@ const GenerationContext = struct {
             // append all fields that are not part of a oneof
             for (m.field.items) |f| {
                 if (f.oneof_index == null or ctx.amountOfElementsInOneofUnion(m, f.oneof_index) == 1) {
-                    try ctx.generateFieldDeclaration(list, messageFqn, file, m, f, false);
+                    try ctx.generateFieldDeclaration(list, messageFqn, file, m, f, false, false);
                 }
             }
 
@@ -521,7 +564,7 @@ const GenerationContext = struct {
                         const f: descriptor.FieldDescriptorProto = field;
                         if (f.oneof_index orelse -1 == @as(i32, @intCast(i))) {
                             const name = try ctx.getFieldName(f);
-                            const typeStr = try ctx.getFieldType(messageFqn, file, f, true);
+                            const typeStr = try ctx.getFieldType(messageFqn, file, f, true, false);
                             try list.append(try std.fmt.allocPrint(allocator, "      {?s}: {?s},\n", .{ name, typeStr }));
                         }
                     }
@@ -545,6 +588,40 @@ const GenerationContext = struct {
                     );
                 }
             }
+
+            // iterate for struct only definitions
+
+            try list.append(
+                \\    pub const _data_struct = struct {
+                \\
+            );
+            // append all fields that are not part of a oneof
+            for (m.field.items) |f| {
+                if (f.oneof_index == null or ctx.amountOfElementsInOneofUnion(m, f.oneof_index) == 1) {
+                    try list.append(try std.fmt.allocPrint(allocator, "    ", .{}));
+                    try ctx.generateFieldDeclaration(list, messageFqn, file, m, f, false, true);
+                }
+            }
+
+            // print all oneof fields
+            for (m.oneof_decl.items, 0..) |oneof, i| {
+                const union_element_count = ctx.amountOfElementsInOneofUnion(m, @as(i32, @intCast(i)));
+                if (union_element_count > 1) {
+                    const oneof_name = oneof.name.?.getSlice();
+                    try list.append(try std.fmt.allocPrint(allocator, "        {s}: ?{s}_union,\n", .{ try escapeName(oneof_name), oneof_name }));
+                }
+            }
+
+            try list.append(
+                \\    };
+                \\
+            );
+
+
+
+
+
+            // END OF MODIFICATIon
 
             // field descriptors
             try list.append(

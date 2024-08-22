@@ -10,6 +10,9 @@ const fd = protobuf.fd;
 
 pub const Tile = struct {
     layers: ArrayList(Layer),
+    pub const _data_struct = struct {
+        layers: ArrayList(Layer._data_struct),
+    };
 
     pub const _desc_table = .{
         .layers = fd(3, .{ .List = .{ .SubMessage = {} } }),
@@ -31,6 +34,15 @@ pub const Tile = struct {
         uint_value: ?u64 = null,
         sint_value: ?i64 = null,
         bool_value: ?bool = null,
+        pub const _data_struct = struct {
+            string_value: ?[]const u8 = null,
+            float_value: ?f32 = null,
+            double_value: ?f64 = null,
+            int_value: ?i64 = null,
+            uint_value: ?u64 = null,
+            sint_value: ?i64 = null,
+            bool_value: ?bool = null,
+        };
 
         pub const _desc_table = .{
             .string_value = fd(1, .String),
@@ -50,6 +62,12 @@ pub const Tile = struct {
         tags: ArrayList(u32),
         type: ?Tile.GeomType = .UNKNOWN,
         geometry: ArrayList(u32),
+        pub const _data_struct = struct {
+            id: ?u64 = 0,
+            tags: ArrayList(u32),
+            type: ?Tile.GeomType = .UNKNOWN,
+            geometry: ArrayList(u32),
+        };
 
         pub const _desc_table = .{
             .id = fd(1, .{ .Varint = .Simple }),
@@ -68,6 +86,14 @@ pub const Tile = struct {
         keys: ArrayList(ManagedString),
         values: ArrayList(Tile.Value),
         extent: ?u32 = 4096,
+        pub const _data_struct = struct {
+            version: u32 = 1,
+            name: []const u8,
+            features: ArrayList(Tile.Feature._data_struct),
+            keys: ArrayList([]const u8),
+            values: ArrayList(Tile.Value._data_struct),
+            extent: ?u32 = 4096,
+        };
 
         pub const _desc_table = .{
             .version = fd(15, .{ .Varint = .Simple }),

@@ -231,6 +231,74 @@ pub const TestAllTypes = struct {
             .oneof_bytes = fd(114, .String),
         };
     };
+    pub const _data_struct = struct {
+        optional_int32: ?i32 = null,
+        optional_int64: ?i64 = null,
+        optional_uint32: ?u32 = null,
+        optional_uint64: ?u64 = null,
+        optional_sint32: ?i32 = null,
+        optional_sint64: ?i64 = null,
+        optional_fixed32: ?u32 = null,
+        optional_fixed64: ?u64 = null,
+        optional_sfixed32: ?i32 = null,
+        optional_sfixed64: ?i64 = null,
+        optional_float: ?f32 = null,
+        optional_double: ?f64 = null,
+        optional_bool: ?bool = null,
+        optional_string: ?[]const u8 = null,
+        optional_bytes: ?[]const u8 = null,
+        a: ?i32 = null,
+        optional_nested_message: ?NestedMessage._data_struct = null,
+        optional_foreign_message: ?ForeignMessage._data_struct = null,
+        optional_nested_enum: ?NestedEnum = null,
+        optional_foreign_enum: ?ForeignEnum = null,
+        optional_string_piece: ?[]const u8 = null,
+        optional_cord: ?[]const u8 = null,
+        optional_lazy_message: ?NestedMessage._data_struct = null,
+        repeated_int32: ArrayList(i32),
+        repeated_int64: ArrayList(i64),
+        repeated_uint32: ArrayList(u32),
+        repeated_uint64: ArrayList(u64),
+        repeated_sint32: ArrayList(i32),
+        repeated_sint64: ArrayList(i64),
+        repeated_fixed32: ArrayList(u32),
+        repeated_fixed64: ArrayList(u64),
+        repeated_sfixed32: ArrayList(i32),
+        repeated_sfixed64: ArrayList(i64),
+        repeated_float: ArrayList(f32),
+        repeated_double: ArrayList(f64),
+        repeated_bool: ArrayList(bool),
+        repeated_string: ArrayList([]const u8),
+        repeated_bytes: ArrayList([]const u8),
+        RepeatedGroup_a: ArrayList(i32),
+        repeated_nested_message: ArrayList(NestedMessage._data_struct),
+        repeated_foreign_message: ArrayList(ForeignMessage._data_struct),
+        repeated_nested_enum: ArrayList(NestedEnum),
+        repeated_foreign_enum: ArrayList(ForeignEnum),
+        repeated_string_piece: ArrayList([]const u8),
+        repeated_cord: ArrayList([]const u8),
+        repeated_lazy_message: ArrayList(NestedMessage._data_struct),
+        default_int32: ?i32 = 41,
+        default_int64: ?i64 = 42,
+        default_uint32: ?u32 = 43,
+        default_uint64: ?u64 = 44,
+        default_sint32: ?i32 = -45,
+        default_sint64: ?i64 = 46,
+        default_fixed32: ?u32 = 47,
+        default_fixed64: ?u64 = 48,
+        default_sfixed32: ?i32 = 49,
+        default_sfixed64: ?i64 = -50,
+        default_float: ?f32 = 51.5,
+        default_double: ?f64 = 52000,
+        default_bool: ?bool = true,
+        default_string: ?[]const u8 = "hello",
+        default_bytes: ?[]const u8 = "world",
+        default_nested_enum: ?NestedEnum = .BAR,
+        default_foreign_enum: ?ForeignEnum = .FOREIGN_BAR,
+        default_string_piece: ?[]const u8 = "abc",
+        default_cord: ?[]const u8 = "123",
+        oneof_field: ?oneof_field_union,
+    };
 
     pub const _desc_table = .{
         .optional_int32 = fd(1, .{ .Varint = .Simple }),
@@ -311,6 +379,9 @@ pub const TestAllTypes = struct {
 
     pub const NestedMessage = struct {
         bb: ?i32 = null,
+        pub const _data_struct = struct {
+            bb: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .bb = fd(1, .{ .Varint = .Simple }),
@@ -328,6 +399,13 @@ pub const NestedTestAllTypes = struct {
     repeated_child: ArrayList(NestedTestAllTypes),
     lazy_child: ?NestedTestAllTypes = null,
     eager_child: ?TestAllTypes = null,
+    pub const _data_struct = struct {
+        child: ?NestedTestAllTypes._data_struct = null,
+        payload: ?TestAllTypes._data_struct = null,
+        repeated_child: ArrayList(NestedTestAllTypes._data_struct),
+        lazy_child: ?NestedTestAllTypes._data_struct = null,
+        eager_child: ?TestAllTypes._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .child = fd(1, .{ .SubMessage = {} }),
@@ -343,6 +421,10 @@ pub const NestedTestAllTypes = struct {
 pub const TestDeprecatedFields = struct {
     deprecated_int32: ?i32 = null,
     deprecated_int32_in_oneof: ?i32 = null,
+    pub const _data_struct = struct {
+        deprecated_int32: ?i32 = null,
+        deprecated_int32_in_oneof: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .deprecated_int32 = fd(1, .{ .Varint = .Simple }),
@@ -353,6 +435,8 @@ pub const TestDeprecatedFields = struct {
 };
 
 pub const TestDeprecatedMessage = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -361,6 +445,10 @@ pub const TestDeprecatedMessage = struct {
 pub const ForeignMessage = struct {
     c: ?i32 = null,
     d: ?i32 = null,
+    pub const _data_struct = struct {
+        c: ?i32 = null,
+        d: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .c = fd(1, .{ .Varint = .Simple }),
@@ -371,12 +459,16 @@ pub const ForeignMessage = struct {
 };
 
 pub const TestReservedFields = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const TestAllExtensions = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -385,6 +477,10 @@ pub const TestAllExtensions = struct {
 pub const TestGroup = struct {
     a: ?i32 = null,
     optional_foreign_enum: ?ForeignEnum = null,
+    pub const _data_struct = struct {
+        a: ?i32 = null,
+        optional_foreign_enum: ?ForeignEnum = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(17, .{ .Varint = .Simple }),
@@ -395,12 +491,16 @@ pub const TestGroup = struct {
 };
 
 pub const TestGroupExtension = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const TestNestedExtension = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -410,6 +510,11 @@ pub const TestChildExtension = struct {
     a: ?ManagedString = null,
     b: ?ManagedString = null,
     optional_extension: ?TestAllExtensions = null,
+    pub const _data_struct = struct {
+        a: ?[]const u8 = null,
+        b: ?[]const u8 = null,
+        optional_extension: ?TestAllExtensions._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .String),
@@ -424,6 +529,11 @@ pub const TestChildExtensionData = struct {
     a: ?ManagedString = null,
     b: ?ManagedString = null,
     optional_extension: ?NestedTestAllExtensionsData = null,
+    pub const _data_struct = struct {
+        a: ?[]const u8 = null,
+        b: ?[]const u8 = null,
+        optional_extension: ?NestedTestAllExtensionsData._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .String),
@@ -433,6 +543,9 @@ pub const TestChildExtensionData = struct {
 
     pub const NestedTestAllExtensionsData = struct {
         dynamic: ?NestedDynamicExtensions = null,
+        pub const _data_struct = struct {
+            dynamic: ?NestedDynamicExtensions._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .dynamic = fd(409707008, .{ .SubMessage = {} }),
@@ -441,6 +554,10 @@ pub const TestChildExtensionData = struct {
         pub const NestedDynamicExtensions = struct {
             a: ?i32 = null,
             b: ?i32 = null,
+            pub const _data_struct = struct {
+                a: ?i32 = null,
+                b: ?i32 = null,
+            };
 
             pub const _desc_table = .{
                 .a = fd(1, .{ .Varint = .Simple }),
@@ -459,6 +576,10 @@ pub const TestChildExtensionData = struct {
 pub const TestNestedChildExtension = struct {
     a: ?i32 = null,
     child: ?TestChildExtension = null,
+    pub const _data_struct = struct {
+        a: ?i32 = null,
+        child: ?TestChildExtension._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .Varint = .Simple }),
@@ -471,6 +592,10 @@ pub const TestNestedChildExtension = struct {
 pub const TestNestedChildExtensionData = struct {
     a: ?i32 = null,
     child: ?TestChildExtensionData = null,
+    pub const _data_struct = struct {
+        a: ?i32 = null,
+        child: ?TestChildExtensionData._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .Varint = .Simple }),
@@ -515,6 +640,42 @@ pub const TestRequired = struct {
     dummy32: ?i32 = null,
     c: i32,
     optional_foreign: ?ForeignMessage = null,
+    pub const _data_struct = struct {
+        a: i32,
+        dummy2: ?i32 = null,
+        b: i32,
+        dummy4: ?i32 = null,
+        dummy5: ?i32 = null,
+        dummy6: ?i32 = null,
+        dummy7: ?i32 = null,
+        dummy8: ?i32 = null,
+        dummy9: ?i32 = null,
+        dummy10: ?i32 = null,
+        dummy11: ?i32 = null,
+        dummy12: ?i32 = null,
+        dummy13: ?i32 = null,
+        dummy14: ?i32 = null,
+        dummy15: ?i32 = null,
+        dummy16: ?i32 = null,
+        dummy17: ?i32 = null,
+        dummy18: ?i32 = null,
+        dummy19: ?i32 = null,
+        dummy20: ?i32 = null,
+        dummy21: ?i32 = null,
+        dummy22: ?i32 = null,
+        dummy23: ?i32 = null,
+        dummy24: ?i32 = null,
+        dummy25: ?i32 = null,
+        dummy26: ?i32 = null,
+        dummy27: ?i32 = null,
+        dummy28: ?i32 = null,
+        dummy29: ?i32 = null,
+        dummy30: ?i32 = null,
+        dummy31: ?i32 = null,
+        dummy32: ?i32 = null,
+        c: i32,
+        optional_foreign: ?ForeignMessage._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .Varint = .Simple }),
@@ -561,6 +722,12 @@ pub const TestRequiredForeign = struct {
     repeated_message: ArrayList(TestRequired),
     dummy: ?i32 = null,
     optional_lazy_message: ?NestedTestAllTypes = null,
+    pub const _data_struct = struct {
+        optional_message: ?TestRequired._data_struct = null,
+        repeated_message: ArrayList(TestRequired._data_struct),
+        dummy: ?i32 = null,
+        optional_lazy_message: ?NestedTestAllTypes._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .optional_message = fd(1, .{ .SubMessage = {} }),
@@ -576,6 +743,11 @@ pub const TestRequiredMessage = struct {
     optional_message: ?TestRequired = null,
     repeated_message: ArrayList(TestRequired),
     required_message: ?TestRequired = null,
+    pub const _data_struct = struct {
+        optional_message: ?TestRequired._data_struct = null,
+        repeated_message: ArrayList(TestRequired._data_struct),
+        required_message: ?TestRequired._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .optional_message = fd(1, .{ .SubMessage = {} }),
@@ -590,6 +762,11 @@ pub const TestNestedRequiredForeign = struct {
     child: ?TestNestedRequiredForeign = null,
     payload: ?TestRequiredForeign = null,
     dummy: ?i32 = null,
+    pub const _data_struct = struct {
+        child: ?TestNestedRequiredForeign._data_struct = null,
+        payload: ?TestRequiredForeign._data_struct = null,
+        dummy: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .child = fd(1, .{ .SubMessage = {} }),
@@ -602,6 +779,9 @@ pub const TestNestedRequiredForeign = struct {
 
 pub const TestForeignNested = struct {
     foreign_nested: ?TestAllTypes.NestedMessage = null,
+    pub const _data_struct = struct {
+        foreign_nested: ?TestAllTypes.NestedMessage._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .foreign_nested = fd(1, .{ .SubMessage = {} }),
@@ -611,22 +791,31 @@ pub const TestForeignNested = struct {
 };
 
 pub const TestEmptyMessage = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const TestEmptyMessageWithExtensions = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const TestPickleNestedMessage = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub const NestedMessage = struct {
         bb: ?i32 = null,
+        pub const _data_struct = struct {
+            bb: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .bb = fd(1, .{ .Varint = .Simple }),
@@ -634,6 +823,9 @@ pub const TestPickleNestedMessage = struct {
 
         pub const NestedNestedMessage = struct {
             cc: ?i32 = null,
+            pub const _data_struct = struct {
+                cc: ?i32 = null,
+            };
 
             pub const _desc_table = .{
                 .cc = fd(1, .{ .Varint = .Simple }),
@@ -649,6 +841,8 @@ pub const TestPickleNestedMessage = struct {
 };
 
 pub const TestMultipleExtensionRanges = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -657,6 +851,10 @@ pub const TestMultipleExtensionRanges = struct {
 pub const TestReallyLargeTagNumber = struct {
     a: ?i32 = null,
     bb: ?i32 = null,
+    pub const _data_struct = struct {
+        a: ?i32 = null,
+        bb: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .Varint = .Simple }),
@@ -669,6 +867,10 @@ pub const TestReallyLargeTagNumber = struct {
 pub const TestRecursiveMessage = struct {
     a: ?TestRecursiveMessage = null,
     i: ?i32 = null,
+    pub const _data_struct = struct {
+        a: ?TestRecursiveMessage._data_struct = null,
+        i: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .SubMessage = {} }),
@@ -682,6 +884,11 @@ pub const TestMutualRecursionA = struct {
     bb: ?TestMutualRecursionB = null,
     sub_message: ?SubMessage = null,
     not_in_this_scc: ?TestAllTypes = null,
+    pub const _data_struct = struct {
+        bb: ?TestMutualRecursionB._data_struct = null,
+        sub_message: ?SubMessage._data_struct = null,
+        not_in_this_scc: ?TestAllTypes._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .bb = fd(1, .{ .SubMessage = {} }),
@@ -691,6 +898,9 @@ pub const TestMutualRecursionA = struct {
 
     pub const SubMessage = struct {
         b: ?TestMutualRecursionB = null,
+        pub const _data_struct = struct {
+            b: ?TestMutualRecursionB._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .b = fd(1, .{ .SubMessage = {} }),
@@ -705,6 +915,10 @@ pub const TestMutualRecursionA = struct {
 pub const TestMutualRecursionB = struct {
     a: ?TestMutualRecursionA = null,
     optional_int32: ?i32 = null,
+    pub const _data_struct = struct {
+        a: ?TestMutualRecursionA._data_struct = null,
+        optional_int32: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .SubMessage = {} }),
@@ -716,6 +930,9 @@ pub const TestMutualRecursionB = struct {
 
 pub const TestIsInitialized = struct {
     sub_message: ?SubMessage = null,
+    pub const _data_struct = struct {
+        sub_message: ?SubMessage._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .sub_message = fd(1, .{ .SubMessage = {} }),
@@ -723,6 +940,9 @@ pub const TestIsInitialized = struct {
 
     pub const SubMessage = struct {
         i: i32,
+        pub const _data_struct = struct {
+            i: i32,
+        };
 
         pub const _desc_table = .{
             .i = fd(2, .{ .Varint = .Simple }),
@@ -736,6 +956,9 @@ pub const TestIsInitialized = struct {
 
 pub const TestDupFieldNumber = struct {
     a: ?i32 = null,
+    pub const _data_struct = struct {
+        a: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .{ .Varint = .Simple }),
@@ -746,6 +969,9 @@ pub const TestDupFieldNumber = struct {
 
 pub const TestEagerMessage = struct {
     sub_message: ?TestAllTypes = null,
+    pub const _data_struct = struct {
+        sub_message: ?TestAllTypes._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .sub_message = fd(1, .{ .SubMessage = {} }),
@@ -756,6 +982,9 @@ pub const TestEagerMessage = struct {
 
 pub const TestLazyMessage = struct {
     sub_message: ?TestAllTypes = null,
+    pub const _data_struct = struct {
+        sub_message: ?TestAllTypes._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .sub_message = fd(1, .{ .SubMessage = {} }),
@@ -768,6 +997,11 @@ pub const TestEagerMaybeLazy = struct {
     message_foo: ?TestAllTypes = null,
     message_bar: ?TestAllTypes = null,
     message_baz: ?NestedMessage = null,
+    pub const _data_struct = struct {
+        message_foo: ?TestAllTypes._data_struct = null,
+        message_bar: ?TestAllTypes._data_struct = null,
+        message_baz: ?NestedMessage._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .message_foo = fd(1, .{ .SubMessage = {} }),
@@ -777,6 +1011,9 @@ pub const TestEagerMaybeLazy = struct {
 
     pub const NestedMessage = struct {
         @"packed": ?TestPackedTypes = null,
+        pub const _data_struct = struct {
+            @"packed": ?TestPackedTypes._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .@"packed" = fd(1, .{ .SubMessage = {} }),
@@ -790,6 +1027,9 @@ pub const TestEagerMaybeLazy = struct {
 
 pub const TestNestedMessageHasBits = struct {
     optional_nested_message: ?NestedMessage = null,
+    pub const _data_struct = struct {
+        optional_nested_message: ?NestedMessage._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .optional_nested_message = fd(1, .{ .SubMessage = {} }),
@@ -798,6 +1038,10 @@ pub const TestNestedMessageHasBits = struct {
     pub const NestedMessage = struct {
         nestedmessage_repeated_int32: ArrayList(i32),
         nestedmessage_repeated_foreignmessage: ArrayList(ForeignMessage),
+        pub const _data_struct = struct {
+            nestedmessage_repeated_int32: ArrayList(i32),
+            nestedmessage_repeated_foreignmessage: ArrayList(ForeignMessage._data_struct),
+        };
 
         pub const _desc_table = .{
             .nestedmessage_repeated_int32 = fd(1, .{ .List = .{ .Varint = .Simple } }),
@@ -823,6 +1067,20 @@ pub const TestCamelCaseFieldNames = struct {
     RepeatedMessageField: ArrayList(ForeignMessage),
     RepeatedStringPieceField: ArrayList(ManagedString),
     RepeatedCordField: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        PrimitiveField: ?i32 = null,
+        StringField: ?[]const u8 = null,
+        EnumField: ?ForeignEnum = null,
+        MessageField: ?ForeignMessage._data_struct = null,
+        StringPieceField: ?[]const u8 = null,
+        CordField: ?[]const u8 = null,
+        RepeatedPrimitiveField: ArrayList(i32),
+        RepeatedStringField: ArrayList([]const u8),
+        RepeatedEnumField: ArrayList(ForeignEnum),
+        RepeatedMessageField: ArrayList(ForeignMessage._data_struct),
+        RepeatedStringPieceField: ArrayList([]const u8),
+        RepeatedCordField: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .PrimitiveField = fd(1, .{ .Varint = .Simple }),
@@ -847,6 +1105,12 @@ pub const TestFieldOrderings = struct {
     my_int: ?i64 = null,
     my_float: ?f32 = null,
     optional_nested_message: ?NestedMessage = null,
+    pub const _data_struct = struct {
+        my_string: ?[]const u8 = null,
+        my_int: ?i64 = null,
+        my_float: ?f32 = null,
+        optional_nested_message: ?NestedMessage._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .my_string = fd(11, .String),
@@ -858,6 +1122,10 @@ pub const TestFieldOrderings = struct {
     pub const NestedMessage = struct {
         oo: ?i64 = null,
         bb: ?i32 = null,
+        pub const _data_struct = struct {
+            oo: ?i64 = null,
+            bb: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .oo = fd(2, .{ .Varint = .Simple }),
@@ -872,6 +1140,9 @@ pub const TestFieldOrderings = struct {
 
 pub const TestExtensionOrderings1 = struct {
     my_string: ?ManagedString = null,
+    pub const _data_struct = struct {
+        my_string: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .my_string = fd(1, .String),
@@ -882,6 +1153,9 @@ pub const TestExtensionOrderings1 = struct {
 
 pub const TestExtensionOrderings2 = struct {
     my_string: ?ManagedString = null,
+    pub const _data_struct = struct {
+        my_string: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .my_string = fd(1, .String),
@@ -889,6 +1163,9 @@ pub const TestExtensionOrderings2 = struct {
 
     pub const TestExtensionOrderings3 = struct {
         my_string: ?ManagedString = null,
+        pub const _data_struct = struct {
+            my_string: ?[]const u8 = null,
+        };
 
         pub const _desc_table = .{
             .my_string = fd(1, .String),
@@ -928,6 +1205,35 @@ pub const TestExtremeDefaultValues = struct {
     string_piece_with_zero: ?ManagedString = ManagedString.static("ab\x00c"),
     cord_with_zero: ?ManagedString = ManagedString.static("12\x003"),
     replacement_string: ?ManagedString = ManagedString.static("${unknown}"),
+    pub const _data_struct = struct {
+        escaped_bytes: ?[]const u8 = "\\000\\001\\007\\010\\014\\n\\r\\t\\013\\\\\\'\\\"\\376",
+        large_uint32: ?u32 = 4294967295,
+        large_uint64: ?u64 = 18446744073709551615,
+        small_int32: ?i32 = -2147483647,
+        small_int64: ?i64 = -9223372036854775807,
+        really_small_int32: ?i32 = -2147483648,
+        really_small_int64: ?i64 = -9223372036854775808,
+        utf8_string: ?[]const u8 = "\xE1\x88\xB4",
+        zero_float: ?f32 = 0,
+        one_float: ?f32 = 1,
+        small_float: ?f32 = 1.5,
+        negative_one_float: ?f32 = -1,
+        negative_float: ?f32 = -1.5,
+        large_float: ?f32 = 2e+08,
+        small_negative_float: ?f32 = -8e-28,
+        inf_double: ?f64 = std.math.inf(f64),
+        neg_inf_double: ?f64 = -std.math.inf(f64),
+        nan_double: ?f64 = std.math.nan(f64),
+        inf_float: ?f32 = std.math.inf(f32),
+        neg_inf_float: ?f32 = -std.math.inf(f32),
+        nan_float: ?f32 = std.math.nan(f32),
+        cpp_trigraph: ?[]const u8 = "? ? ?? ?? ??? ??/ ??-",
+        string_with_zero: ?[]const u8 = "hel\x00lo",
+        bytes_with_zero: ?[]const u8 = "wor\\000ld",
+        string_piece_with_zero: ?[]const u8 = "ab\x00c",
+        cord_with_zero: ?[]const u8 = "12\x003",
+        replacement_string: ?[]const u8 = "${unknown}",
+    };
 
     pub const _desc_table = .{
         .escaped_bytes = fd(1, .String),
@@ -964,6 +1270,9 @@ pub const TestExtremeDefaultValues = struct {
 
 pub const SparseEnumMessage = struct {
     sparse_enum: ?TestSparseEnum = null,
+    pub const _data_struct = struct {
+        sparse_enum: ?TestSparseEnum = null,
+    };
 
     pub const _desc_table = .{
         .sparse_enum = fd(1, .{ .Varint = .Simple }),
@@ -974,6 +1283,9 @@ pub const SparseEnumMessage = struct {
 
 pub const OneString = struct {
     data: ?ManagedString = null,
+    pub const _data_struct = struct {
+        data: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .String),
@@ -984,6 +1296,9 @@ pub const OneString = struct {
 
 pub const MoreString = struct {
     data: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        data: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .List = .String }),
@@ -994,6 +1309,9 @@ pub const MoreString = struct {
 
 pub const OneBytes = struct {
     data: ?ManagedString = null,
+    pub const _data_struct = struct {
+        data: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .String),
@@ -1004,6 +1322,9 @@ pub const OneBytes = struct {
 
 pub const MoreBytes = struct {
     data: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        data: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .List = .String }),
@@ -1045,6 +1366,40 @@ pub const ManyOptionalString = struct {
     str30: ?ManagedString = null,
     str31: ?ManagedString = null,
     str32: ?ManagedString = null,
+    pub const _data_struct = struct {
+        str1: ?[]const u8 = null,
+        str2: ?[]const u8 = null,
+        str3: ?[]const u8 = null,
+        str4: ?[]const u8 = null,
+        str5: ?[]const u8 = null,
+        str6: ?[]const u8 = null,
+        str7: ?[]const u8 = null,
+        str8: ?[]const u8 = null,
+        str9: ?[]const u8 = null,
+        str10: ?[]const u8 = null,
+        str11: ?[]const u8 = null,
+        str12: ?[]const u8 = null,
+        str13: ?[]const u8 = null,
+        str14: ?[]const u8 = null,
+        str15: ?[]const u8 = null,
+        str16: ?[]const u8 = null,
+        str17: ?[]const u8 = null,
+        str18: ?[]const u8 = null,
+        str19: ?[]const u8 = null,
+        str20: ?[]const u8 = null,
+        str21: ?[]const u8 = null,
+        str22: ?[]const u8 = null,
+        str23: ?[]const u8 = null,
+        str24: ?[]const u8 = null,
+        str25: ?[]const u8 = null,
+        str26: ?[]const u8 = null,
+        str27: ?[]const u8 = null,
+        str28: ?[]const u8 = null,
+        str29: ?[]const u8 = null,
+        str30: ?[]const u8 = null,
+        str31: ?[]const u8 = null,
+        str32: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .str1 = fd(1, .String),
@@ -1086,6 +1441,9 @@ pub const ManyOptionalString = struct {
 
 pub const Int32Message = struct {
     data: ?i32 = null,
+    pub const _data_struct = struct {
+        data: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .Varint = .Simple }),
@@ -1096,6 +1454,9 @@ pub const Int32Message = struct {
 
 pub const Uint32Message = struct {
     data: ?u32 = null,
+    pub const _data_struct = struct {
+        data: ?u32 = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .Varint = .Simple }),
@@ -1106,6 +1467,9 @@ pub const Uint32Message = struct {
 
 pub const Int64Message = struct {
     data: ?i64 = null,
+    pub const _data_struct = struct {
+        data: ?i64 = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .Varint = .Simple }),
@@ -1116,6 +1480,9 @@ pub const Int64Message = struct {
 
 pub const Uint64Message = struct {
     data: ?u64 = null,
+    pub const _data_struct = struct {
+        data: ?u64 = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .Varint = .Simple }),
@@ -1126,6 +1493,9 @@ pub const Uint64Message = struct {
 
 pub const BoolMessage = struct {
     data: ?bool = null,
+    pub const _data_struct = struct {
+        data: ?bool = null,
+    };
 
     pub const _desc_table = .{
         .data = fd(1, .{ .Varint = .Simple }),
@@ -1158,6 +1528,9 @@ pub const TestOneof = struct {
             .b = fd(6, .String),
         };
     };
+    pub const _data_struct = struct {
+        foo: ?foo_union,
+    };
 
     pub const _desc_table = .{
         .foo = fd(null, .{ .OneOf = foo_union }),
@@ -1172,6 +1545,13 @@ pub const TestOneofBackwardsCompatible = struct {
     foo_message: ?TestAllTypes = null,
     a: ?i32 = null,
     b: ?ManagedString = null,
+    pub const _data_struct = struct {
+        foo_int: ?i32 = null,
+        foo_string: ?[]const u8 = null,
+        foo_message: ?TestAllTypes._data_struct = null,
+        a: ?i32 = null,
+        b: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .foo_int = fd(1, .{ .Varint = .Simple }),
@@ -1263,6 +1643,12 @@ pub const TestOneof2 = struct {
             .bar_bytes_with_empty_default = fd(23, .String),
         };
     };
+    pub const _data_struct = struct {
+        baz_int: ?i32 = null,
+        baz_string: ?[]const u8 = "BAZ",
+        foo: ?foo_union,
+        bar: ?bar_union,
+    };
 
     pub const _desc_table = .{
         .baz_int = fd(18, .{ .Varint = .Simple }),
@@ -1281,6 +1667,10 @@ pub const TestOneof2 = struct {
     pub const NestedMessage = struct {
         moo_int: ?i64 = null,
         corge_int: ArrayList(i32),
+        pub const _data_struct = struct {
+            moo_int: ?i64 = null,
+            corge_int: ArrayList(i32),
+        };
 
         pub const _desc_table = .{
             .moo_int = fd(1, .{ .Varint = .Simple }),
@@ -1311,6 +1701,9 @@ pub const TestRequiredOneof = struct {
             .foo_message = fd(3, .{ .SubMessage = {} }),
         };
     };
+    pub const _data_struct = struct {
+        foo: ?foo_union,
+    };
 
     pub const _desc_table = .{
         .foo = fd(null, .{ .OneOf = foo_union }),
@@ -1318,6 +1711,9 @@ pub const TestRequiredOneof = struct {
 
     pub const NestedMessage = struct {
         required_double: f64,
+        pub const _data_struct = struct {
+            required_double: f64,
+        };
 
         pub const _desc_table = .{
             .required_double = fd(1, .{ .FixedInt = .I64 }),
@@ -1344,6 +1740,22 @@ pub const TestPackedTypes = struct {
     packed_double: ArrayList(f64),
     packed_bool: ArrayList(bool),
     packed_enum: ArrayList(ForeignEnum),
+    pub const _data_struct = struct {
+        packed_int32: ArrayList(i32),
+        packed_int64: ArrayList(i64),
+        packed_uint32: ArrayList(u32),
+        packed_uint64: ArrayList(u64),
+        packed_sint32: ArrayList(i32),
+        packed_sint64: ArrayList(i64),
+        packed_fixed32: ArrayList(u32),
+        packed_fixed64: ArrayList(u64),
+        packed_sfixed32: ArrayList(i32),
+        packed_sfixed64: ArrayList(i64),
+        packed_float: ArrayList(f32),
+        packed_double: ArrayList(f64),
+        packed_bool: ArrayList(bool),
+        packed_enum: ArrayList(ForeignEnum),
+    };
 
     pub const _desc_table = .{
         .packed_int32 = fd(90, .{ .PackedList = .{ .Varint = .Simple } }),
@@ -1380,6 +1792,22 @@ pub const TestUnpackedTypes = struct {
     unpacked_double: ArrayList(f64),
     unpacked_bool: ArrayList(bool),
     unpacked_enum: ArrayList(ForeignEnum),
+    pub const _data_struct = struct {
+        unpacked_int32: ArrayList(i32),
+        unpacked_int64: ArrayList(i64),
+        unpacked_uint32: ArrayList(u32),
+        unpacked_uint64: ArrayList(u64),
+        unpacked_sint32: ArrayList(i32),
+        unpacked_sint64: ArrayList(i64),
+        unpacked_fixed32: ArrayList(u32),
+        unpacked_fixed64: ArrayList(u64),
+        unpacked_sfixed32: ArrayList(i32),
+        unpacked_sfixed64: ArrayList(i64),
+        unpacked_float: ArrayList(f32),
+        unpacked_double: ArrayList(f64),
+        unpacked_bool: ArrayList(bool),
+        unpacked_enum: ArrayList(ForeignEnum),
+    };
 
     pub const _desc_table = .{
         .unpacked_int32 = fd(90, .{ .List = .{ .Varint = .Simple } }),
@@ -1402,12 +1830,16 @@ pub const TestUnpackedTypes = struct {
 };
 
 pub const TestPackedExtensions = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const TestUnpackedExtensions = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -1421,6 +1853,15 @@ pub const TestDynamicExtensions = struct {
     dynamic_message_extension: ?DynamicMessageType = null,
     repeated_extension: ArrayList(ManagedString),
     packed_extension: ArrayList(i32),
+    pub const _data_struct = struct {
+        scalar_extension: ?u32 = null,
+        enum_extension: ?ForeignEnum = null,
+        dynamic_enum_extension: ?DynamicEnumType = null,
+        message_extension: ?ForeignMessage._data_struct = null,
+        dynamic_message_extension: ?DynamicMessageType._data_struct = null,
+        repeated_extension: ArrayList([]const u8),
+        packed_extension: ArrayList(i32),
+    };
 
     pub const _desc_table = .{
         .scalar_extension = fd(2000, .{ .FixedInt = .I32 }),
@@ -1441,6 +1882,9 @@ pub const TestDynamicExtensions = struct {
 
     pub const DynamicMessageType = struct {
         dynamic_field: ?i32 = null,
+        pub const _data_struct = struct {
+            dynamic_field: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .dynamic_field = fd(2100, .{ .Varint = .Simple }),
@@ -1459,6 +1903,14 @@ pub const TestRepeatedScalarDifferentTagSizes = struct {
     repeated_int64: ArrayList(i64),
     repeated_float: ArrayList(f32),
     repeated_uint64: ArrayList(u64),
+    pub const _data_struct = struct {
+        repeated_fixed32: ArrayList(u32),
+        repeated_int32: ArrayList(i32),
+        repeated_fixed64: ArrayList(u64),
+        repeated_int64: ArrayList(i64),
+        repeated_float: ArrayList(f32),
+        repeated_uint64: ArrayList(u64),
+    };
 
     pub const _desc_table = .{
         .repeated_fixed32 = fd(12, .{ .List = .{ .FixedInt = .I32 } }),
@@ -1478,6 +1930,13 @@ pub const TestParsingMerge = struct {
     repeated_all_types: ArrayList(TestAllTypes),
     optional_group_all_types: ?TestAllTypes = null,
     repeated_group_all_types: ?TestAllTypes = null,
+    pub const _data_struct = struct {
+        required_all_types: ?TestAllTypes._data_struct = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+        optional_group_all_types: ?TestAllTypes._data_struct = null,
+        repeated_group_all_types: ?TestAllTypes._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .required_all_types = fd(1, .{ .SubMessage = {} }),
@@ -1495,6 +1954,15 @@ pub const TestParsingMerge = struct {
         Group2_field1: ?TestAllTypes = null,
         ext1: ArrayList(TestAllTypes),
         ext2: ArrayList(TestAllTypes),
+        pub const _data_struct = struct {
+            field1: ArrayList(TestAllTypes._data_struct),
+            field2: ArrayList(TestAllTypes._data_struct),
+            field3: ArrayList(TestAllTypes._data_struct),
+            Group1_field1: ?TestAllTypes._data_struct = null,
+            Group2_field1: ?TestAllTypes._data_struct = null,
+            ext1: ArrayList(TestAllTypes._data_struct),
+            ext2: ArrayList(TestAllTypes._data_struct),
+        };
 
         pub const _desc_table = .{
             .field1 = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -1514,6 +1982,9 @@ pub const TestParsingMerge = struct {
 
 pub const TestMergeException = struct {
     all_extensions: ?TestAllExtensions = null,
+    pub const _data_struct = struct {
+        all_extensions: ?TestAllExtensions._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .all_extensions = fd(1, .{ .SubMessage = {} }),
@@ -1524,6 +1995,9 @@ pub const TestMergeException = struct {
 
 pub const TestCommentInjectionMessage = struct {
     a: ?ManagedString = ManagedString.static("*/ <- Neither should this."),
+    pub const _data_struct = struct {
+        a: ?[]const u8 = "*/ <- Neither should this.",
+    };
 
     pub const _desc_table = .{
         .a = fd(1, .String),
@@ -1539,6 +2013,14 @@ pub const TestMessageSize = struct {
     m4: ?ManagedString = null,
     m5: ?i32 = null,
     m6: ?i64 = null,
+    pub const _data_struct = struct {
+        m1: ?bool = null,
+        m2: ?i64 = null,
+        m3: ?bool = null,
+        m4: ?[]const u8 = null,
+        m5: ?i32 = null,
+        m6: ?i64 = null,
+    };
 
     pub const _desc_table = .{
         .m1 = fd(1, .{ .Varint = .Simple }),
@@ -1553,36 +2035,48 @@ pub const TestMessageSize = struct {
 };
 
 pub const FooRequest = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const FooResponse = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const FooClientMessage = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const FooServerMessage = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const BarRequest = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
 };
 
 pub const BarResponse = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -1596,6 +2090,15 @@ pub const TestJsonName = struct {
     FIELD_NAME5: ?i32 = null,
     field_name6: ?i32 = null,
     fieldname7: ?i32 = null,
+    pub const _data_struct = struct {
+        field_name1: ?i32 = null,
+        fieldName2: ?i32 = null,
+        FieldName3: ?i32 = null,
+        _field_name4: ?i32 = null,
+        FIELD_NAME5: ?i32 = null,
+        field_name6: ?i32 = null,
+        fieldname7: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .field_name1 = fd(1, .{ .Varint = .Simple }),
@@ -1641,6 +2144,19 @@ pub const TestHugeFieldNumbers = struct {
             .oneof_bytes = fd(536870014, .String),
         };
     };
+    pub const _data_struct = struct {
+        optional_int32: ?i32 = null,
+        fixed_32: ?i32 = null,
+        repeated_int32: ArrayList(i32),
+        packed_int32: ArrayList(i32),
+        optional_enum: ?ForeignEnum = null,
+        optional_string: ?[]const u8 = null,
+        optional_bytes: ?[]const u8 = null,
+        optional_message: ?ForeignMessage._data_struct = null,
+        group_a: ?i32 = null,
+        string_string_map: ArrayList(StringStringMapEntry._data_struct),
+        oneof_field: ?oneof_field_union,
+    };
 
     pub const _desc_table = .{
         .optional_int32 = fd(536870000, .{ .Varint = .Simple }),
@@ -1659,6 +2175,10 @@ pub const TestHugeFieldNumbers = struct {
     pub const StringStringMapEntry = struct {
         key: ?ManagedString = null,
         value: ?ManagedString = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?[]const u8 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -1681,6 +2201,17 @@ pub const TestExtensionInsideTable = struct {
     field8: ?i32 = null,
     field9: ?i32 = null,
     field10: ?i32 = null,
+    pub const _data_struct = struct {
+        field1: ?i32 = null,
+        field2: ?i32 = null,
+        field3: ?i32 = null,
+        field4: ?i32 = null,
+        field6: ?i32 = null,
+        field7: ?i32 = null,
+        field8: ?i32 = null,
+        field9: ?i32 = null,
+        field10: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .field1 = fd(1, .{ .Varint = .Simple }),
@@ -1699,6 +2230,9 @@ pub const TestExtensionInsideTable = struct {
 
 pub const TestNestedGroupExtensionInnerExtension = struct {
     inner_name: ?ManagedString = null,
+    pub const _data_struct = struct {
+        inner_name: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .inner_name = fd(1, .String),
@@ -1712,6 +2246,12 @@ pub const TestExtensionRangeSerialize = struct {
     foo_two: ?i32 = null,
     foo_three: ?i32 = null,
     foo_four: ?i32 = null,
+    pub const _data_struct = struct {
+        foo_one: ?i32 = null,
+        foo_two: ?i32 = null,
+        foo_three: ?i32 = null,
+        foo_four: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .foo_one = fd(1, .{ .Varint = .Simple }),
@@ -1728,6 +2268,12 @@ pub const TestVerifyInt32Simple = struct {
     optional_int32_2: ?i32 = null,
     optional_int32_63: ?i32 = null,
     optional_int32_64: ?i32 = null,
+    pub const _data_struct = struct {
+        optional_int32_1: ?i32 = null,
+        optional_int32_2: ?i32 = null,
+        optional_int32_63: ?i32 = null,
+        optional_int32_64: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .optional_int32_1 = fd(1, .{ .Varint = .Simple }),
@@ -1746,6 +2292,14 @@ pub const TestVerifyInt32 = struct {
     optional_int32_64: ?i32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_int32_1: ?i32 = null,
+        optional_int32_2: ?i32 = null,
+        optional_int32_63: ?i32 = null,
+        optional_int32_64: ?i32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_int32_1 = fd(1, .{ .Varint = .Simple }),
@@ -1769,6 +2323,17 @@ pub const TestVerifyMostlyInt32 = struct {
     optional_int32_64: ?i32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_int64_30: ?i64 = null,
+        optional_int32_1: ?i32 = null,
+        optional_int32_2: ?i32 = null,
+        optional_int32_3: ?i32 = null,
+        optional_int32_4: ?i32 = null,
+        optional_int32_63: ?i32 = null,
+        optional_int32_64: ?i32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_int64_30 = fd(30, .{ .Varint = .Simple }),
@@ -1796,6 +2361,18 @@ pub const TestVerifyMostlyInt32BigFieldNumber = struct {
     optional_int32_64: ?i32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_int64_30: ?i64 = null,
+        optional_int32_300: ?i32 = null,
+        optional_int32_1: ?i32 = null,
+        optional_int32_2: ?i32 = null,
+        optional_int32_3: ?i32 = null,
+        optional_int32_4: ?i32 = null,
+        optional_int32_63: ?i32 = null,
+        optional_int32_64: ?i32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_int64_30 = fd(30, .{ .Varint = .Simple }),
@@ -1818,6 +2395,12 @@ pub const TestVerifyUint32Simple = struct {
     optional_uint32_2: ?u32 = null,
     optional_uint32_63: ?u32 = null,
     optional_uint32_64: ?u32 = null,
+    pub const _data_struct = struct {
+        optional_uint32_1: ?u32 = null,
+        optional_uint32_2: ?u32 = null,
+        optional_uint32_63: ?u32 = null,
+        optional_uint32_64: ?u32 = null,
+    };
 
     pub const _desc_table = .{
         .optional_uint32_1 = fd(1, .{ .Varint = .Simple }),
@@ -1836,6 +2419,14 @@ pub const TestVerifyUint32 = struct {
     optional_uint32_64: ?u32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_uint32_1: ?u32 = null,
+        optional_uint32_2: ?u32 = null,
+        optional_uint32_63: ?u32 = null,
+        optional_uint32_64: ?u32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_uint32_1 = fd(1, .{ .Varint = .Simple }),
@@ -1856,6 +2447,14 @@ pub const TestVerifyOneUint32 = struct {
     optional_int32_64: ?i32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_uint32_1: ?u32 = null,
+        optional_int32_2: ?i32 = null,
+        optional_int32_63: ?i32 = null,
+        optional_int32_64: ?i32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_uint32_1 = fd(1, .{ .Varint = .Simple }),
@@ -1877,6 +2476,15 @@ pub const TestVerifyOneInt32BigFieldNumber = struct {
     optional_int64_64: ?i64 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_int32_65: ?i32 = null,
+        optional_int64_1: ?i64 = null,
+        optional_int64_2: ?i64 = null,
+        optional_int64_63: ?i64 = null,
+        optional_int64_64: ?i64 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_int32_65 = fd(65, .{ .Varint = .Simple }),
@@ -1900,6 +2508,16 @@ pub const TestVerifyInt32BigFieldNumber = struct {
     optional_int32_64: ?i32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_int32_1000: ?i32 = null,
+        optional_int32_65: ?i32 = null,
+        optional_int32_1: ?i32 = null,
+        optional_int32_2: ?i32 = null,
+        optional_int32_63: ?i32 = null,
+        optional_int32_64: ?i32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_int32_1000 = fd(1000, .{ .Varint = .Simple }),
@@ -1924,6 +2542,16 @@ pub const TestVerifyUint32BigFieldNumber = struct {
     optional_uint32_64: ?u32 = null,
     optional_all_types: ?TestAllTypes = null,
     repeated_all_types: ArrayList(TestAllTypes),
+    pub const _data_struct = struct {
+        optional_uint32_1000: ?u32 = null,
+        optional_uint32_65: ?u32 = null,
+        optional_uint32_1: ?u32 = null,
+        optional_uint32_2: ?u32 = null,
+        optional_uint32_63: ?u32 = null,
+        optional_uint32_64: ?u32 = null,
+        optional_all_types: ?TestAllTypes._data_struct = null,
+        repeated_all_types: ArrayList(TestAllTypes._data_struct),
+    };
 
     pub const _desc_table = .{
         .optional_uint32_1000 = fd(1000, .{ .Varint = .Simple }),
@@ -1941,6 +2569,9 @@ pub const TestVerifyUint32BigFieldNumber = struct {
 
 pub const TestVerifyBigFieldNumberUint32 = struct {
     optional_nested: ?Nested = null,
+    pub const _data_struct = struct {
+        optional_nested: ?Nested._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .optional_nested = fd(1, .{ .SubMessage = {} }),
@@ -1957,6 +2588,18 @@ pub const TestVerifyBigFieldNumberUint32 = struct {
         optional_uint32_64: ?u32 = null,
         optional_nested: ?TestVerifyBigFieldNumberUint32.Nested = null,
         repeated_nested: ArrayList(TestVerifyBigFieldNumberUint32.Nested),
+        pub const _data_struct = struct {
+            optional_uint32_5000: ?u32 = null,
+            optional_uint32_1000: ?u32 = null,
+            optional_uint32_66: ?u32 = null,
+            optional_uint32_65: ?u32 = null,
+            optional_uint32_1: ?u32 = null,
+            optional_uint32_2: ?u32 = null,
+            optional_uint32_63: ?u32 = null,
+            optional_uint32_64: ?u32 = null,
+            optional_nested: ?TestVerifyBigFieldNumberUint32.Nested._data_struct = null,
+            repeated_nested: ArrayList(TestVerifyBigFieldNumberUint32.Nested._data_struct),
+        };
 
         pub const _desc_table = .{
             .optional_uint32_5000 = fd(5000, .{ .Varint = .Simple }),
@@ -2015,6 +2658,45 @@ pub const EnumParseTester = struct {
     packed_arbitrary_midfield: ArrayList(Arbitrary),
     packed_arbitrary_hifield: ArrayList(Arbitrary),
     other_field: ?i32 = null,
+    pub const _data_struct = struct {
+        optional_seq_small_0_lowfield: ?SeqSmall0 = null,
+        optional_seq_small_0_midfield: ?SeqSmall0 = null,
+        optional_seq_small_0_hifield: ?SeqSmall0 = null,
+        repeated_seq_small_0_lowfield: ArrayList(SeqSmall0),
+        repeated_seq_small_0_midfield: ArrayList(SeqSmall0),
+        repeated_seq_small_0_hifield: ArrayList(SeqSmall0),
+        packed_seq_small_0_lowfield: ArrayList(SeqSmall0),
+        packed_seq_small_0_midfield: ArrayList(SeqSmall0),
+        packed_seq_small_0_hifield: ArrayList(SeqSmall0),
+        optional_seq_small_1_lowfield: ?SeqSmall1 = null,
+        optional_seq_small_1_midfield: ?SeqSmall1 = null,
+        optional_seq_small_1_hifield: ?SeqSmall1 = null,
+        repeated_seq_small_1_lowfield: ArrayList(SeqSmall1),
+        repeated_seq_small_1_midfield: ArrayList(SeqSmall1),
+        repeated_seq_small_1_hifield: ArrayList(SeqSmall1),
+        packed_seq_small_1_lowfield: ArrayList(SeqSmall1),
+        packed_seq_small_1_midfield: ArrayList(SeqSmall1),
+        packed_seq_small_1_hifield: ArrayList(SeqSmall1),
+        optional_seq_large_lowfield: ?SeqLarge = null,
+        optional_seq_large_midfield: ?SeqLarge = null,
+        optional_seq_large_hifield: ?SeqLarge = null,
+        repeated_seq_large_lowfield: ArrayList(SeqLarge),
+        repeated_seq_large_midfield: ArrayList(SeqLarge),
+        repeated_seq_large_hifield: ArrayList(SeqLarge),
+        packed_seq_large_lowfield: ArrayList(SeqLarge),
+        packed_seq_large_midfield: ArrayList(SeqLarge),
+        packed_seq_large_hifield: ArrayList(SeqLarge),
+        optional_arbitrary_lowfield: ?Arbitrary = null,
+        optional_arbitrary_midfield: ?Arbitrary = null,
+        optional_arbitrary_hifield: ?Arbitrary = null,
+        repeated_arbitrary_lowfield: ArrayList(Arbitrary),
+        repeated_arbitrary_midfield: ArrayList(Arbitrary),
+        repeated_arbitrary_hifield: ArrayList(Arbitrary),
+        packed_arbitrary_lowfield: ArrayList(Arbitrary),
+        packed_arbitrary_midfield: ArrayList(Arbitrary),
+        packed_arbitrary_hifield: ArrayList(Arbitrary),
+        other_field: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .optional_seq_small_0_lowfield = fd(1, .{ .Varint = .Simple }),

@@ -33,6 +33,7 @@ test "DefaultValuesInit" {
     try testing.expectEqual(demo.enum_field.?, .E1);
     try testing.expectEqualSlices(u8, "", demo.empty_field.?.getSlice());
     try testing.expectEqualSlices(u8, "moo", demo.bytes_field.?.getSlice());
+
 }
 
 test "DefaultValuesDecode" {

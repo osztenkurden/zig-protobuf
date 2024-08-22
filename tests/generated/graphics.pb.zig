@@ -15,6 +15,14 @@ pub const InventoryItem = struct {
     quantity: i32 = 0,
     description: ManagedString = .Empty,
     id: i32 = 0,
+    pub const _data_struct = struct {
+        slot: i32 = 0,
+        name: []const u8 = "",
+        image: i32 = 0,
+        quantity: i32 = 0,
+        description: []const u8 = "",
+        id: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .slot = fd(1, .{ .Varint = .Simple }),
@@ -42,6 +50,21 @@ pub const Character = struct {
     color: ManagedString = .Empty,
     clan: ManagedString = .Empty,
     enabled: bool = false,
+    pub const _data_struct = struct {
+        id: []const u8 = "",
+        class: i32 = 0,
+        gender: i32 = 0,
+        race: i32 = 0,
+        head: i32 = 0,
+        body: i32 = 0,
+        helmet: i32 = 0,
+        right_hand: i32 = 0,
+        nick: []const u8 = "",
+        left_hand: i32 = 0,
+        color: []const u8 = "",
+        clan: []const u8 = "",
+        enabled: bool = false,
+    };
 
     pub const _desc_table = .{
         .id = fd(1, .String),
@@ -66,6 +89,11 @@ pub const Alignment = struct {
     id: ManagedString = .Empty,
     name: ManagedString = .Empty,
     color: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        id: []const u8 = "",
+        name: []const u8 = "",
+        color: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .id = fd(1, .String),
@@ -83,6 +111,14 @@ pub const Index = struct {
     offset_y: i32 = 0,
     animations: ArrayList(AnimationsEntry),
     name: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        id: i32 = 0,
+        grh: ArrayList(i32),
+        offset_x: i32 = 0,
+        offset_y: i32 = 0,
+        animations: ArrayList(AnimationsEntry._data_struct),
+        name: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .id = fd(1, .{ .Varint = .Simple }),
@@ -96,6 +132,10 @@ pub const Index = struct {
     pub const AnimationsEntry = struct {
         key: ManagedString = .Empty,
         value: i32 = 0,
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -111,6 +151,10 @@ pub const Index = struct {
 pub const StoredChunk = struct {
     chunk_id: i32 = 0,
     entities: ArrayList(MapEntity),
+    pub const _data_struct = struct {
+        chunk_id: i32 = 0,
+        entities: ArrayList(MapEntity._data_struct),
+    };
 
     pub const _desc_table = .{
         .chunk_id = fd(1, .{ .Varint = .Simple }),
@@ -128,6 +172,15 @@ pub const MapEntity = struct {
     graphic_id: i32 = 0,
     entity_id: ManagedString = .Empty,
     vertical_graphic: bool = false,
+    pub const _data_struct = struct {
+        x: i32 = 0,
+        y: i32 = 0,
+        light: ?Light._data_struct = null,
+        collider: ?Shape._data_struct = null,
+        graphic_id: i32 = 0,
+        entity_id: []const u8 = "",
+        vertical_graphic: bool = false,
+    };
 
     pub const _desc_table = .{
         .x = fd(1, .{ .Varint = .Simple }),
@@ -148,6 +201,13 @@ pub const Light = struct {
     radius: f32 = 0,
     saturation: f32 = 0,
     fall_off: f32 = 0,
+    pub const _data_struct = struct {
+        hue: f32 = 0,
+        height: f32 = 0,
+        radius: f32 = 0,
+        saturation: f32 = 0,
+        fall_off: f32 = 0,
+    };
 
     pub const _desc_table = .{
         .hue = fd(1, .{ .FixedInt = .I32 }),
@@ -163,6 +223,10 @@ pub const Light = struct {
 pub const Point = struct {
     x: i32 = 0,
     y: i32 = 0,
+    pub const _data_struct = struct {
+        x: i32 = 0,
+        y: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .x = fd(1, .{ .Varint = .Simple }),
@@ -174,6 +238,9 @@ pub const Point = struct {
 
 pub const Shape = struct {
     points: ArrayList(Point),
+    pub const _data_struct = struct {
+        points: ArrayList(Point._data_struct),
+    };
 
     pub const _desc_table = .{
         .points = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -198,6 +265,23 @@ pub const Npc = struct {
     skills: ArrayList(SkillsEntry),
     abilities: ArrayList(AbilitiesEntry),
     visual: ?Character = null,
+    pub const _data_struct = struct {
+        x: i32 = 0,
+        y: i32 = 0,
+        items: ArrayList(InventoryItem._data_struct),
+        name: []const u8 = "",
+        alignment: []const u8 = "",
+        ai: []const u8 = "",
+        min_hp: i32 = 0,
+        max_hp: i32 = 0,
+        min_mana: i32 = 0,
+        max_mana: i32 = 0,
+        min_strenght: i32 = 0,
+        max_strenght: i32 = 0,
+        skills: ArrayList(SkillsEntry._data_struct),
+        abilities: ArrayList(AbilitiesEntry._data_struct),
+        visual: ?Character._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .x = fd(1, .{ .Varint = .Simple }),
@@ -220,6 +304,10 @@ pub const Npc = struct {
     pub const SkillsEntry = struct {
         key: i32 = 0,
         value: i32 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -232,6 +320,10 @@ pub const Npc = struct {
     pub const AbilitiesEntry = struct {
         key: i32 = 0,
         value: i32 = 0,
+        pub const _data_struct = struct {
+            key: i32 = 0,
+            value: i32 = 0,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -254,6 +346,17 @@ pub const Tile = struct {
     layer2: i32 = 0,
     layer3: i32 = 0,
     layer4: i32 = 0,
+    pub const _data_struct = struct {
+        x: i32 = 0,
+        y: i32 = 0,
+        tileset_grh: i32 = 0,
+        tileset: i32 = 0,
+        flags: i32 = 0,
+        blocked: i32 = 0,
+        layer2: i32 = 0,
+        layer3: i32 = 0,
+        layer4: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .x = fd(1, .{ .Varint = .Simple }),
@@ -275,6 +378,12 @@ pub const MapItem = struct {
     y: i32 = 0,
     item: i32 = 0,
     amount: i32 = 0,
+    pub const _data_struct = struct {
+        x: i32 = 0,
+        y: i32 = 0,
+        item: i32 = 0,
+        amount: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .x = fd(1, .{ .Varint = .Simple }),
@@ -297,6 +406,18 @@ pub const GraphicsDB = struct {
     weapons: ArrayList(Index),
     scripts: ArrayList(Script),
     spine: ArrayList(Spine),
+    pub const _data_struct = struct {
+        textures: ArrayList(Texture._data_struct),
+        graphics: ArrayList(Graphic._data_struct),
+        bodies: ArrayList(Index._data_struct),
+        fxs: ArrayList(Index._data_struct),
+        heads: ArrayList(Index._data_struct),
+        helmets: ArrayList(Index._data_struct),
+        shields: ArrayList(Index._data_struct),
+        weapons: ArrayList(Index._data_struct),
+        scripts: ArrayList(Script._data_struct),
+        spine: ArrayList(Spine._data_struct),
+    };
 
     pub const _desc_table = .{
         .textures = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -317,6 +438,10 @@ pub const GraphicsDB = struct {
 pub const Script = struct {
     path: ManagedString = .Empty,
     code: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        path: []const u8 = "",
+        code: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .path = fd(1, .String),
@@ -332,6 +457,13 @@ pub const SubTexture = struct {
     emmisive: ManagedString = .Empty,
     width: i32 = 0,
     height: i32 = 0,
+    pub const _data_struct = struct {
+        diffuse: []const u8 = "",
+        normal: []const u8 = "",
+        emmisive: []const u8 = "",
+        width: i32 = 0,
+        height: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .diffuse = fd(1, .String),
@@ -353,6 +485,16 @@ pub const Texture = struct {
     dxt1: ?SubTexture = null,
     dxt3: ?SubTexture = null,
     dxt5: ?SubTexture = null,
+    pub const _data_struct = struct {
+        diffuse: []const u8 = "",
+        normal: []const u8 = "",
+        emmisive: []const u8 = "",
+        width: i32 = 0,
+        height: i32 = 0,
+        dxt1: ?SubTexture._data_struct = null,
+        dxt3: ?SubTexture._data_struct = null,
+        dxt5: ?SubTexture._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .diffuse = fd(1, .String),
@@ -385,6 +527,11 @@ pub const Graphic = struct {
             .animation = fd(3, .{ .SubMessage = {} }),
         };
     };
+    pub const _data_struct = struct {
+        id: i32 = 0,
+        name: []const u8 = "",
+        type: ?type_union,
+    };
 
     pub const _desc_table = .{
         .id = fd(1, .{ .Varint = .Simple }),
@@ -403,6 +550,15 @@ pub const Sprite = struct {
     h: i32 = 0,
     pivot_x: i32 = 0,
     pivot_y: i32 = 0,
+    pub const _data_struct = struct {
+        texture: i32 = 0,
+        x: i32 = 0,
+        y: i32 = 0,
+        w: i32 = 0,
+        h: i32 = 0,
+        pivot_x: i32 = 0,
+        pivot_y: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .texture = fd(1, .{ .Varint = .Simple }),
@@ -420,6 +576,10 @@ pub const Sprite = struct {
 pub const Animation = struct {
     frames: ArrayList(i32),
     speed: f32 = 0,
+    pub const _data_struct = struct {
+        frames: ArrayList(i32),
+        speed: f32 = 0,
+    };
 
     pub const _desc_table = .{
         .frames = fd(1, .{ .PackedList = .{ .Varint = .Simple } }),
@@ -433,6 +593,11 @@ pub const Spine = struct {
     name: ManagedString = .Empty,
     json: ManagedString = .Empty,
     atlas: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        name: []const u8 = "",
+        json: []const u8 = "",
+        atlas: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),

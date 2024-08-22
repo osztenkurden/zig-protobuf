@@ -24,6 +24,8 @@ pub const MapValueEnumNoBinary = enum(i32) {
 };
 
 pub const Empty = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -31,6 +33,9 @@ pub const Empty = struct {
 
 pub const EnumContainer = struct {
     outer_enum: ?OuterEnum = null,
+    pub const _data_struct = struct {
+        outer_enum: ?OuterEnum = null,
+    };
 
     pub const _desc_table = .{
         .outer_enum = fd(1, .{ .Varint = .Simple }),
@@ -43,6 +48,11 @@ pub const Simple1 = struct {
     a_string: ManagedString,
     a_repeated_string: ArrayList(ManagedString),
     a_boolean: ?bool = null,
+    pub const _data_struct = struct {
+        a_string: []const u8,
+        a_repeated_string: ArrayList([]const u8),
+        a_boolean: ?bool = null,
+    };
 
     pub const _desc_table = .{
         .a_string = fd(1, .String),
@@ -56,6 +66,10 @@ pub const Simple1 = struct {
 pub const Simple2 = struct {
     a_string: ManagedString,
     a_repeated_string: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        a_string: []const u8,
+        a_repeated_string: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .a_string = fd(1, .String),
@@ -70,6 +84,12 @@ pub const SpecialCases = struct {
     default: ManagedString,
     function: ManagedString,
     @"var": ManagedString,
+    pub const _data_struct = struct {
+        normal: []const u8,
+        default: []const u8,
+        function: []const u8,
+        @"var": []const u8,
+    };
 
     pub const _desc_table = .{
         .normal = fd(1, .String),
@@ -87,6 +107,13 @@ pub const OptionalFields = struct {
     a_nested_message: ?Nested = null,
     a_repeated_message: ArrayList(Nested),
     a_repeated_string: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        a_string: ?[]const u8 = null,
+        a_bool: bool,
+        a_nested_message: ?Nested._data_struct = null,
+        a_repeated_message: ArrayList(Nested._data_struct),
+        a_repeated_string: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .a_string = fd(1, .String),
@@ -98,6 +125,9 @@ pub const OptionalFields = struct {
 
     pub const Nested = struct {
         an_int: ?i32 = null,
+        pub const _data_struct = struct {
+            an_int: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .an_int = fd(1, .{ .Varint = .Simple }),
@@ -113,6 +143,11 @@ pub const HasExtensions = struct {
     str1: ?ManagedString = null,
     str2: ?ManagedString = null,
     str3: ?ManagedString = null,
+    pub const _data_struct = struct {
+        str1: ?[]const u8 = null,
+        str2: ?[]const u8 = null,
+        str3: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .str1 = fd(1, .String),
@@ -129,6 +164,13 @@ pub const Complex = struct {
     a_nested_message: ?Nested = null,
     a_repeated_message: ArrayList(Nested),
     a_repeated_string: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        a_string: []const u8,
+        an_out_of_order_bool: bool,
+        a_nested_message: ?Nested._data_struct = null,
+        a_repeated_message: ArrayList(Nested._data_struct),
+        a_repeated_string: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .a_string = fd(1, .String),
@@ -140,6 +182,9 @@ pub const Complex = struct {
 
     pub const Nested = struct {
         an_int: i32,
+        pub const _data_struct = struct {
+            an_int: i32,
+        };
 
         pub const _desc_table = .{
             .an_int = fd(2, .{ .Varint = .Simple }),
@@ -153,6 +198,9 @@ pub const Complex = struct {
 
 pub const IsExtension = struct {
     ext1: ?ManagedString = null,
+    pub const _data_struct = struct {
+        ext1: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .ext1 = fd(1, .String),
@@ -162,6 +210,8 @@ pub const IsExtension = struct {
 };
 
 pub const IndirectExtension = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -174,6 +224,14 @@ pub const DefaultValues = struct {
     enum_field: ?Enum = .E1,
     empty_field: ?ManagedString = .Empty,
     bytes_field: ?ManagedString = ManagedString.static("moo"),
+    pub const _data_struct = struct {
+        string_field: ?[]const u8 = "default<>'\"abc",
+        bool_field: ?bool = true,
+        int_field: ?i64 = 11,
+        enum_field: ?Enum = .E1,
+        empty_field: ?[]const u8 = "",
+        bytes_field: ?[]const u8 = "moo",
+    };
 
     pub const _desc_table = .{
         .string_field = fd(1, .String),
@@ -202,6 +260,16 @@ pub const FloatingPointFields = struct {
     required_double_field: f64,
     repeated_double_field: ArrayList(f64),
     default_double_field: ?f64 = 2,
+    pub const _data_struct = struct {
+        optional_float_field: ?f32 = null,
+        required_float_field: f32,
+        repeated_float_field: ArrayList(f32),
+        default_float_field: ?f32 = 2,
+        optional_double_field: ?f64 = null,
+        required_double_field: f64,
+        repeated_double_field: ArrayList(f64),
+        default_double_field: ?f64 = 2,
+    };
 
     pub const _desc_table = .{
         .optional_float_field = fd(1, .{ .FixedInt = .I32 }),
@@ -223,6 +291,13 @@ pub const TestClone = struct {
     simple2: ArrayList(Simple1),
     bytes_field: ?ManagedString = null,
     unused: ?ManagedString = null,
+    pub const _data_struct = struct {
+        str: ?[]const u8 = null,
+        simple1: ?Simple1._data_struct = null,
+        simple2: ArrayList(Simple1._data_struct),
+        bytes_field: ?[]const u8 = null,
+        unused: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .str = fd(1, .String),
@@ -237,6 +312,9 @@ pub const TestClone = struct {
 
 pub const CloneExtension = struct {
     ext: ?ManagedString = null,
+    pub const _data_struct = struct {
+        ext: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .ext = fd(2, .String),
@@ -249,6 +327,11 @@ pub const TestGroup = struct {
     id: ?ManagedString = null,
     required_simple: ?Simple2 = null,
     optional_simple: ?Simple2 = null,
+    pub const _data_struct = struct {
+        id: ?[]const u8 = null,
+        required_simple: ?Simple2._data_struct = null,
+        optional_simple: ?Simple2._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .id = fd(6, .String),
@@ -261,6 +344,9 @@ pub const TestGroup = struct {
 
 pub const TestReservedNames = struct {
     extension: ?i32 = null,
+    pub const _data_struct = struct {
+        extension: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .extension = fd(1, .{ .Varint = .Simple }),
@@ -270,6 +356,8 @@ pub const TestReservedNames = struct {
 };
 
 pub const TestReservedNamesExtension = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub usingnamespace protobuf.MessageMixins(@This());
@@ -334,6 +422,14 @@ pub const TestMessageWithOneof = struct {
             .btwo = fd(13, .{ .Varint = .Simple }),
         };
     };
+    pub const _data_struct = struct {
+        normal_field: ?bool = null,
+        repeated_field: ArrayList([]const u8),
+        partial_oneof: ?partial_oneof_union,
+        recursive_oneof: ?recursive_oneof_union,
+        default_oneof_a: ?default_oneof_a_union,
+        default_oneof_b: ?default_oneof_b_union,
+    };
 
     pub const _desc_table = .{
         .normal_field = fd(8, .{ .Varint = .Simple }),
@@ -350,6 +446,10 @@ pub const TestMessageWithOneof = struct {
 pub const TestEndsWithBytes = struct {
     value: ?i32 = null,
     data: ?ManagedString = null,
+    pub const _data_struct = struct {
+        value: ?i32 = null,
+        data: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -372,6 +472,20 @@ pub const TestMapFieldsNoBinary = struct {
     map_bool_string: ArrayList(MapBoolStringEntry),
     test_map_fields: ?TestMapFieldsNoBinary = null,
     map_string_testmapfields: ArrayList(MapStringTestmapfieldsEntry),
+    pub const _data_struct = struct {
+        map_string_string: ArrayList(MapStringStringEntry._data_struct),
+        map_string_int32: ArrayList(MapStringInt32Entry._data_struct),
+        map_string_int64: ArrayList(MapStringInt64Entry._data_struct),
+        map_string_bool: ArrayList(MapStringBoolEntry._data_struct),
+        map_string_double: ArrayList(MapStringDoubleEntry._data_struct),
+        map_string_enum: ArrayList(MapStringEnumEntry._data_struct),
+        map_string_msg: ArrayList(MapStringMsgEntry._data_struct),
+        map_int32_string: ArrayList(MapInt32StringEntry._data_struct),
+        map_int64_string: ArrayList(MapInt64StringEntry._data_struct),
+        map_bool_string: ArrayList(MapBoolStringEntry._data_struct),
+        test_map_fields: ?TestMapFieldsNoBinary._data_struct = null,
+        map_string_testmapfields: ArrayList(MapStringTestmapfieldsEntry._data_struct),
+    };
 
     pub const _desc_table = .{
         .map_string_string = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -391,6 +505,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringStringEntry = struct {
         key: ?ManagedString = null,
         value: ?ManagedString = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?[]const u8 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -403,6 +521,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringInt32Entry = struct {
         key: ?ManagedString = null,
         value: ?i32 = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -415,6 +537,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringInt64Entry = struct {
         key: ?ManagedString = null,
         value: ?i64 = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?i64 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -427,6 +553,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringBoolEntry = struct {
         key: ?ManagedString = null,
         value: ?bool = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?bool = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -439,6 +569,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringDoubleEntry = struct {
         key: ?ManagedString = null,
         value: ?f64 = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?f64 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -451,6 +585,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringEnumEntry = struct {
         key: ?ManagedString = null,
         value: ?MapValueEnumNoBinary = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?MapValueEnumNoBinary = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -463,6 +601,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringMsgEntry = struct {
         key: ?ManagedString = null,
         value: ?MapValueMessageNoBinary = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?MapValueMessageNoBinary._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -475,6 +617,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapInt32StringEntry = struct {
         key: ?i32 = null,
         value: ?ManagedString = null,
+        pub const _data_struct = struct {
+            key: ?i32 = null,
+            value: ?[]const u8 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -487,6 +633,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapInt64StringEntry = struct {
         key: ?i64 = null,
         value: ?ManagedString = null,
+        pub const _data_struct = struct {
+            key: ?i64 = null,
+            value: ?[]const u8 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -499,6 +649,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapBoolStringEntry = struct {
         key: ?bool = null,
         value: ?ManagedString = null,
+        pub const _data_struct = struct {
+            key: ?bool = null,
+            value: ?[]const u8 = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .{ .Varint = .Simple }),
@@ -511,6 +665,10 @@ pub const TestMapFieldsNoBinary = struct {
     pub const MapStringTestmapfieldsEntry = struct {
         key: ?ManagedString = null,
         value: ?TestMapFieldsNoBinary = null,
+        pub const _data_struct = struct {
+            key: ?[]const u8 = null,
+            value: ?TestMapFieldsNoBinary._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -525,6 +683,9 @@ pub const TestMapFieldsNoBinary = struct {
 
 pub const MapValueMessageNoBinary = struct {
     foo: ?i32 = null,
+    pub const _data_struct = struct {
+        foo: ?i32 = null,
+    };
 
     pub const _desc_table = .{
         .foo = fd(1, .{ .Varint = .Simple }),
@@ -534,13 +695,20 @@ pub const MapValueMessageNoBinary = struct {
 };
 
 pub const Deeply = struct {
+    pub const _data_struct = struct {};
+
     pub const _desc_table = .{};
 
     pub const Nested = struct {
+        pub const _data_struct = struct {};
+
         pub const _desc_table = .{};
 
         pub const Message = struct {
             count: ?i32 = null,
+            pub const _data_struct = struct {
+                count: ?i32 = null,
+            };
 
             pub const _desc_table = .{
                 .count = fd(1, .{ .Varint = .Simple }),

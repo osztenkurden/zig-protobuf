@@ -10,6 +10,9 @@ const fd = protobuf.fd;
 
 pub const WouldYouParseThisForMePlease = struct {
     field: ?Test = null,
+    pub const _data_struct = struct {
+        field: ?Test._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .field = fd(1, .{ .SubMessage = {} }),
@@ -20,6 +23,9 @@ pub const WouldYouParseThisForMePlease = struct {
 
 pub const Test = struct {
     field: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        field: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .field = fd(1, .String),

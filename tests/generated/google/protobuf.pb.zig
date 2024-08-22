@@ -10,6 +10,9 @@ const fd = protobuf.fd;
 
 pub const FileDescriptorSet = struct {
     file: ArrayList(FileDescriptorProto),
+    pub const _data_struct = struct {
+        file: ArrayList(FileDescriptorProto._data_struct),
+    };
 
     pub const _desc_table = .{
         .file = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -32,6 +35,21 @@ pub const FileDescriptorProto = struct {
     source_code_info: ?SourceCodeInfo = null,
     syntax: ?ManagedString = null,
     edition: ?ManagedString = null,
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        package: ?[]const u8 = null,
+        dependency: ArrayList([]const u8),
+        public_dependency: ArrayList(i32),
+        weak_dependency: ArrayList(i32),
+        message_type: ArrayList(DescriptorProto._data_struct),
+        enum_type: ArrayList(EnumDescriptorProto._data_struct),
+        service: ArrayList(ServiceDescriptorProto._data_struct),
+        extension: ArrayList(FieldDescriptorProto._data_struct),
+        options: ?FileOptions._data_struct = null,
+        source_code_info: ?SourceCodeInfo._data_struct = null,
+        syntax: ?[]const u8 = null,
+        edition: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -63,6 +81,18 @@ pub const DescriptorProto = struct {
     options: ?MessageOptions = null,
     reserved_range: ArrayList(ReservedRange),
     reserved_name: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        field: ArrayList(FieldDescriptorProto._data_struct),
+        extension: ArrayList(FieldDescriptorProto._data_struct),
+        nested_type: ArrayList(DescriptorProto._data_struct),
+        enum_type: ArrayList(EnumDescriptorProto._data_struct),
+        extension_range: ArrayList(ExtensionRange._data_struct),
+        oneof_decl: ArrayList(OneofDescriptorProto._data_struct),
+        options: ?MessageOptions._data_struct = null,
+        reserved_range: ArrayList(ReservedRange._data_struct),
+        reserved_name: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -81,6 +111,11 @@ pub const DescriptorProto = struct {
         start: ?i32 = null,
         end: ?i32 = null,
         options: ?ExtensionRangeOptions = null,
+        pub const _data_struct = struct {
+            start: ?i32 = null,
+            end: ?i32 = null,
+            options: ?ExtensionRangeOptions._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .start = fd(1, .{ .Varint = .Simple }),
@@ -94,6 +129,10 @@ pub const DescriptorProto = struct {
     pub const ReservedRange = struct {
         start: ?i32 = null,
         end: ?i32 = null,
+        pub const _data_struct = struct {
+            start: ?i32 = null,
+            end: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .start = fd(1, .{ .Varint = .Simple }),
@@ -110,6 +149,11 @@ pub const ExtensionRangeOptions = struct {
     uninterpreted_option: ArrayList(UninterpretedOption),
     declaration: ArrayList(Declaration),
     verification: ?VerificationState = .UNVERIFIED,
+    pub const _data_struct = struct {
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+        declaration: ArrayList(Declaration._data_struct),
+        verification: ?VerificationState = .UNVERIFIED,
+    };
 
     pub const _desc_table = .{
         .uninterpreted_option = fd(999, .{ .List = .{ .SubMessage = {} } }),
@@ -130,6 +174,14 @@ pub const ExtensionRangeOptions = struct {
         is_repeated: ?bool = null,
         reserved: ?bool = null,
         repeated: ?bool = null,
+        pub const _data_struct = struct {
+            number: ?i32 = null,
+            full_name: ?[]const u8 = null,
+            type: ?[]const u8 = null,
+            is_repeated: ?bool = null,
+            reserved: ?bool = null,
+            repeated: ?bool = null,
+        };
 
         pub const _desc_table = .{
             .number = fd(1, .{ .Varint = .Simple }),
@@ -158,6 +210,19 @@ pub const FieldDescriptorProto = struct {
     json_name: ?ManagedString = null,
     options: ?FieldOptions = null,
     proto3_optional: ?bool = null,
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        number: ?i32 = null,
+        label: ?Label = null,
+        type: ?Type = null,
+        type_name: ?[]const u8 = null,
+        extendee: ?[]const u8 = null,
+        default_value: ?[]const u8 = null,
+        oneof_index: ?i32 = null,
+        json_name: ?[]const u8 = null,
+        options: ?FieldOptions._data_struct = null,
+        proto3_optional: ?bool = null,
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -208,6 +273,10 @@ pub const FieldDescriptorProto = struct {
 pub const OneofDescriptorProto = struct {
     name: ?ManagedString = null,
     options: ?OneofOptions = null,
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        options: ?OneofOptions._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -223,6 +292,13 @@ pub const EnumDescriptorProto = struct {
     options: ?EnumOptions = null,
     reserved_range: ArrayList(EnumReservedRange),
     reserved_name: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        value: ArrayList(EnumValueDescriptorProto._data_struct),
+        options: ?EnumOptions._data_struct = null,
+        reserved_range: ArrayList(EnumReservedRange._data_struct),
+        reserved_name: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -235,6 +311,10 @@ pub const EnumDescriptorProto = struct {
     pub const EnumReservedRange = struct {
         start: ?i32 = null,
         end: ?i32 = null,
+        pub const _data_struct = struct {
+            start: ?i32 = null,
+            end: ?i32 = null,
+        };
 
         pub const _desc_table = .{
             .start = fd(1, .{ .Varint = .Simple }),
@@ -251,6 +331,11 @@ pub const EnumValueDescriptorProto = struct {
     name: ?ManagedString = null,
     number: ?i32 = null,
     options: ?EnumValueOptions = null,
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        number: ?i32 = null,
+        options: ?EnumValueOptions._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -265,6 +350,11 @@ pub const ServiceDescriptorProto = struct {
     name: ?ManagedString = null,
     method: ArrayList(MethodDescriptorProto),
     options: ?ServiceOptions = null,
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        method: ArrayList(MethodDescriptorProto._data_struct),
+        options: ?ServiceOptions._data_struct = null,
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -282,6 +372,14 @@ pub const MethodDescriptorProto = struct {
     options: ?MethodOptions = null,
     client_streaming: ?bool = false,
     server_streaming: ?bool = false,
+    pub const _data_struct = struct {
+        name: ?[]const u8 = null,
+        input_type: ?[]const u8 = null,
+        output_type: ?[]const u8 = null,
+        options: ?MethodOptions._data_struct = null,
+        client_streaming: ?bool = false,
+        server_streaming: ?bool = false,
+    };
 
     pub const _desc_table = .{
         .name = fd(1, .String),
@@ -317,6 +415,29 @@ pub const FileOptions = struct {
     php_metadata_namespace: ?ManagedString = null,
     ruby_package: ?ManagedString = null,
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        java_package: ?[]const u8 = null,
+        java_outer_classname: ?[]const u8 = null,
+        java_multiple_files: ?bool = false,
+        java_generate_equals_and_hash: ?bool = null,
+        java_string_check_utf8: ?bool = false,
+        optimize_for: ?OptimizeMode = .SPEED,
+        go_package: ?[]const u8 = null,
+        cc_generic_services: ?bool = false,
+        java_generic_services: ?bool = false,
+        py_generic_services: ?bool = false,
+        php_generic_services: ?bool = false,
+        deprecated: ?bool = false,
+        cc_enable_arenas: ?bool = true,
+        objc_class_prefix: ?[]const u8 = null,
+        csharp_namespace: ?[]const u8 = null,
+        swift_prefix: ?[]const u8 = null,
+        php_class_prefix: ?[]const u8 = null,
+        php_namespace: ?[]const u8 = null,
+        php_metadata_namespace: ?[]const u8 = null,
+        ruby_package: ?[]const u8 = null,
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .java_package = fd(1, .String),
@@ -359,6 +480,14 @@ pub const MessageOptions = struct {
     map_entry: ?bool = null,
     deprecated_legacy_json_field_conflicts: ?bool = null,
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        message_set_wire_format: ?bool = false,
+        no_standard_descriptor_accessor: ?bool = false,
+        deprecated: ?bool = false,
+        map_entry: ?bool = null,
+        deprecated_legacy_json_field_conflicts: ?bool = null,
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .message_set_wire_format = fd(1, .{ .Varint = .Simple }),
@@ -385,6 +514,20 @@ pub const FieldOptions = struct {
     target: ?OptionTargetType = null,
     targets: ArrayList(OptionTargetType),
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        ctype: ?CType = .STRING,
+        @"packed": ?bool = null,
+        jstype: ?JSType = .JS_NORMAL,
+        lazy: ?bool = false,
+        unverified_lazy: ?bool = false,
+        deprecated: ?bool = false,
+        weak: ?bool = false,
+        debug_redact: ?bool = false,
+        retention: ?OptionRetention = null,
+        target: ?OptionTargetType = null,
+        targets: ArrayList(OptionTargetType),
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .ctype = fd(1, .{ .Varint = .Simple }),
@@ -441,6 +584,9 @@ pub const FieldOptions = struct {
 
 pub const OneofOptions = struct {
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .uninterpreted_option = fd(999, .{ .List = .{ .SubMessage = {} } }),
@@ -454,6 +600,12 @@ pub const EnumOptions = struct {
     deprecated: ?bool = false,
     deprecated_legacy_json_field_conflicts: ?bool = null,
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        allow_alias: ?bool = null,
+        deprecated: ?bool = false,
+        deprecated_legacy_json_field_conflicts: ?bool = null,
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .allow_alias = fd(2, .{ .Varint = .Simple }),
@@ -468,6 +620,10 @@ pub const EnumOptions = struct {
 pub const EnumValueOptions = struct {
     deprecated: ?bool = false,
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        deprecated: ?bool = false,
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .deprecated = fd(1, .{ .Varint = .Simple }),
@@ -480,6 +636,10 @@ pub const EnumValueOptions = struct {
 pub const ServiceOptions = struct {
     deprecated: ?bool = false,
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        deprecated: ?bool = false,
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .deprecated = fd(33, .{ .Varint = .Simple }),
@@ -493,6 +653,11 @@ pub const MethodOptions = struct {
     deprecated: ?bool = false,
     idempotency_level: ?IdempotencyLevel = .IDEMPOTENCY_UNKNOWN,
     uninterpreted_option: ArrayList(UninterpretedOption),
+    pub const _data_struct = struct {
+        deprecated: ?bool = false,
+        idempotency_level: ?IdempotencyLevel = .IDEMPOTENCY_UNKNOWN,
+        uninterpreted_option: ArrayList(UninterpretedOption._data_struct),
+    };
 
     pub const _desc_table = .{
         .deprecated = fd(33, .{ .Varint = .Simple }),
@@ -518,6 +683,15 @@ pub const UninterpretedOption = struct {
     double_value: ?f64 = null,
     string_value: ?ManagedString = null,
     aggregate_value: ?ManagedString = null,
+    pub const _data_struct = struct {
+        name: ArrayList(NamePart._data_struct),
+        identifier_value: ?[]const u8 = null,
+        positive_int_value: ?u64 = null,
+        negative_int_value: ?i64 = null,
+        double_value: ?f64 = null,
+        string_value: ?[]const u8 = null,
+        aggregate_value: ?[]const u8 = null,
+    };
 
     pub const _desc_table = .{
         .name = fd(2, .{ .List = .{ .SubMessage = {} } }),
@@ -532,6 +706,10 @@ pub const UninterpretedOption = struct {
     pub const NamePart = struct {
         name_part: ManagedString,
         is_extension: bool,
+        pub const _data_struct = struct {
+            name_part: []const u8,
+            is_extension: bool,
+        };
 
         pub const _desc_table = .{
             .name_part = fd(1, .String),
@@ -546,6 +724,9 @@ pub const UninterpretedOption = struct {
 
 pub const SourceCodeInfo = struct {
     location: ArrayList(Location),
+    pub const _data_struct = struct {
+        location: ArrayList(Location._data_struct),
+    };
 
     pub const _desc_table = .{
         .location = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -557,6 +738,13 @@ pub const SourceCodeInfo = struct {
         leading_comments: ?ManagedString = null,
         trailing_comments: ?ManagedString = null,
         leading_detached_comments: ArrayList(ManagedString),
+        pub const _data_struct = struct {
+            path: ArrayList(i32),
+            span: ArrayList(i32),
+            leading_comments: ?[]const u8 = null,
+            trailing_comments: ?[]const u8 = null,
+            leading_detached_comments: ArrayList([]const u8),
+        };
 
         pub const _desc_table = .{
             .path = fd(1, .{ .PackedList = .{ .Varint = .Simple } }),
@@ -574,6 +762,9 @@ pub const SourceCodeInfo = struct {
 
 pub const GeneratedCodeInfo = struct {
     annotation: ArrayList(Annotation),
+    pub const _data_struct = struct {
+        annotation: ArrayList(Annotation._data_struct),
+    };
 
     pub const _desc_table = .{
         .annotation = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -585,6 +776,13 @@ pub const GeneratedCodeInfo = struct {
         begin: ?i32 = null,
         end: ?i32 = null,
         semantic: ?Semantic = null,
+        pub const _data_struct = struct {
+            path: ArrayList(i32),
+            source_file: ?[]const u8 = null,
+            begin: ?i32 = null,
+            end: ?i32 = null,
+            semantic: ?Semantic = null,
+        };
 
         pub const _desc_table = .{
             .path = fd(1, .{ .PackedList = .{ .Varint = .Simple } }),
@@ -610,6 +808,10 @@ pub const GeneratedCodeInfo = struct {
 pub const Any = struct {
     type_url: ManagedString = .Empty,
     value: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        type_url: []const u8 = "",
+        value: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .type_url = fd(1, .String),
@@ -622,6 +824,10 @@ pub const Any = struct {
 pub const Duration = struct {
     seconds: i64 = 0,
     nanos: i32 = 0,
+    pub const _data_struct = struct {
+        seconds: i64 = 0,
+        nanos: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .seconds = fd(1, .{ .Varint = .Simple }),
@@ -633,6 +839,9 @@ pub const Duration = struct {
 
 pub const FieldMask = struct {
     paths: ArrayList(ManagedString),
+    pub const _data_struct = struct {
+        paths: ArrayList([]const u8),
+    };
 
     pub const _desc_table = .{
         .paths = fd(1, .{ .List = .String }),
@@ -648,6 +857,9 @@ pub const NullValue = enum(i32) {
 
 pub const Struct = struct {
     fields: ArrayList(FieldsEntry),
+    pub const _data_struct = struct {
+        fields: ArrayList(FieldsEntry._data_struct),
+    };
 
     pub const _desc_table = .{
         .fields = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -656,6 +868,10 @@ pub const Struct = struct {
     pub const FieldsEntry = struct {
         key: ManagedString = .Empty,
         value: ?Value = null,
+        pub const _data_struct = struct {
+            key: []const u8 = "",
+            value: ?Value._data_struct = null,
+        };
 
         pub const _desc_table = .{
             .key = fd(1, .String),
@@ -695,6 +911,9 @@ pub const Value = struct {
             .list_value = fd(6, .{ .SubMessage = {} }),
         };
     };
+    pub const _data_struct = struct {
+        kind: ?kind_union,
+    };
 
     pub const _desc_table = .{
         .kind = fd(null, .{ .OneOf = kind_union }),
@@ -705,6 +924,9 @@ pub const Value = struct {
 
 pub const ListValue = struct {
     values: ArrayList(Value),
+    pub const _data_struct = struct {
+        values: ArrayList(Value._data_struct),
+    };
 
     pub const _desc_table = .{
         .values = fd(1, .{ .List = .{ .SubMessage = {} } }),
@@ -716,6 +938,10 @@ pub const ListValue = struct {
 pub const Timestamp = struct {
     seconds: i64 = 0,
     nanos: i32 = 0,
+    pub const _data_struct = struct {
+        seconds: i64 = 0,
+        nanos: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .seconds = fd(1, .{ .Varint = .Simple }),
@@ -727,6 +953,9 @@ pub const Timestamp = struct {
 
 pub const DoubleValue = struct {
     value: f64 = 0,
+    pub const _data_struct = struct {
+        value: f64 = 0,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .FixedInt = .I64 }),
@@ -737,6 +966,9 @@ pub const DoubleValue = struct {
 
 pub const FloatValue = struct {
     value: f32 = 0,
+    pub const _data_struct = struct {
+        value: f32 = 0,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .FixedInt = .I32 }),
@@ -747,6 +979,9 @@ pub const FloatValue = struct {
 
 pub const Int64Value = struct {
     value: i64 = 0,
+    pub const _data_struct = struct {
+        value: i64 = 0,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -757,6 +992,9 @@ pub const Int64Value = struct {
 
 pub const UInt64Value = struct {
     value: u64 = 0,
+    pub const _data_struct = struct {
+        value: u64 = 0,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -767,6 +1005,9 @@ pub const UInt64Value = struct {
 
 pub const Int32Value = struct {
     value: i32 = 0,
+    pub const _data_struct = struct {
+        value: i32 = 0,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -777,6 +1018,9 @@ pub const Int32Value = struct {
 
 pub const UInt32Value = struct {
     value: u32 = 0,
+    pub const _data_struct = struct {
+        value: u32 = 0,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -787,6 +1031,9 @@ pub const UInt32Value = struct {
 
 pub const BoolValue = struct {
     value: bool = false,
+    pub const _data_struct = struct {
+        value: bool = false,
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -797,6 +1044,9 @@ pub const BoolValue = struct {
 
 pub const StringValue = struct {
     value: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        value: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .String),
@@ -807,6 +1057,9 @@ pub const StringValue = struct {
 
 pub const BytesValue = struct {
     value: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        value: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .String),

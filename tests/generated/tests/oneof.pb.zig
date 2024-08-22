@@ -18,6 +18,10 @@ pub const Enum = enum(i32) {
 pub const Message = struct {
     value: i32 = 0,
     str: ManagedString = .Empty,
+    pub const _data_struct = struct {
+        value: i32 = 0,
+        str: []const u8 = "",
+    };
 
     pub const _desc_table = .{
         .value = fd(1, .{ .Varint = .Simple }),
@@ -49,6 +53,11 @@ pub const OneofContainer = struct {
             .a_number = fd(3, .{ .Varint = .Simple }),
             .enum_value = fd(6, .{ .Varint = .Simple }),
         };
+    };
+    pub const _data_struct = struct {
+        regular_field: []const u8 = "",
+        enum_field: Enum = @enumFromInt(0),
+        some_oneof: ?some_oneof_union,
     };
 
     pub const _desc_table = .{

@@ -474,6 +474,98 @@ pub fn pb_dupe(comptime T: type, original: T, allocator: Allocator) !T {
     return result;
 }
 
+/// Generic function to deeply duplicate a message using a new allocator, with only values and no methods attached
+
+pub fn pb_dupe_struct_only(comptime T: type, original: T, allocator: Allocator) !T._data_struct {
+    var result: T._data_struct = undefined;
+
+    inline for (@typeInfo(T._data_struct).Struct.fields) |field| {
+        @field(result, field.name) = try dupe_field_data_only(original, field.name, @field(T._desc_table, field.name).ftype, allocator, field.type);
+    }
+
+    return result;
+}
+
+
+/// Internal dupe value only function for a specific field
+fn dupe_field_data_only(original: anytype, comptime field_name: []const u8, comptime ftype: FieldType, allocator: Allocator, return_field_type: type) !return_field_type {
+    switch (ftype) {
+        .Varint, .FixedInt => {
+            return @field(original, field_name);
+        },
+        .List => |list_type| {
+            const capacity = @field(original, field_name).items.len;
+            var list = try return_field_type.initCapacity(allocator, capacity);
+            if (list_type == .SubMessage or list_type == .String) {
+                for (@field(original, field_name).items) |item| {
+                    try list.append(try item.dupe_struct_only(allocator));
+                }
+            } else {
+                for (@field(original, field_name).items) |item| {
+                    try list.append(item);
+                }
+            }
+            return list;
+        },
+        .PackedList => |_| {
+            const capacity = @field(original, field_name).items.len;
+            var list = try @TypeOf(@field(original, field_name)).initCapacity(allocator, capacity);
+
+            for (@field(original, field_name).items) |item| {
+                try list.append(item);
+            }
+
+            return list;
+        },
+        .SubMessage => {
+            switch (@typeInfo(@TypeOf(@field(original, field_name)))) {
+                .Optional => {
+                    if (@field(original, field_name)) |val| {
+                        return try val.dupe_struct_only(allocator);
+                    } else {
+                        return null;
+                    }
+                },
+                else => return try @field(original, field_name).dupe_struct_only(allocator),
+            }
+        },
+        .String => {
+            switch (@typeInfo(@TypeOf(@field(original, field_name)))) {
+                .Optional => {
+                    if (@field(original, field_name)) |val| {
+                        const duped = try val.dupe(allocator);
+
+                        return duped.getSlice();
+                    } else {
+                        return null;
+                    }
+                },
+                else => {
+                    const duped = try @field(original, field_name).dupe(allocator);
+                    return duped.getSlice();
+                },
+            }
+        },
+        .OneOf => |one_of| {
+            // if the value is set, inline-iterate over the possible OneOfs
+            if (@field(original, field_name)) |union_value| {
+                const active = @tagName(union_value);
+                inline for (@typeInfo(@TypeOf(one_of._union_desc)).Struct.fields) |union_field| {
+                    // and if one matches the actual tagName of the union
+                    if (std.mem.eql(u8, union_field.name, active)) {
+                        // deinit the current value
+                        const value = try dupe_field_data_only(union_value, union_field.name, @field(one_of._union_desc, union_field.name).ftype, allocator);
+
+                        return @unionInit(one_of, union_field.name, value);
+                    }
+                }
+            }
+            return null;
+        },
+    }
+}
+
+
 /// Internal dupe function for a specific field
 fn dupe_field(original: anytype, comptime field_name: []const u8, comptime ftype: FieldType, allocator: Allocator) !@TypeOf(@field(original, field_name)) {
     switch (ftype) {
@@ -979,6 +1071,9 @@ pub fn MessageMixins(comptime Self: type) type {
         }
         pub fn dupe(self: Self, allocator: Allocator) !Self {
             return pb_dupe(Self, self, allocator);
+        }
+        pub fn dupe_struct_only(self: Self, allocator: Allocator) !Self._data_struct {
+            return pb_dupe_struct_only(Self, self, allocator);
         }
     };
 }
