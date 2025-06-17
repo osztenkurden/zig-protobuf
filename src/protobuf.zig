@@ -23,6 +23,8 @@ pub const ManagedStringTag = enum { Owned, Const, Empty };
 
 pub const AllocatedString = struct { allocator: Allocator, str: []const u8 };
 
+pub const StringOrArrayFlag = struct { data: []const u8, isString: bool };
+
 pub const ManagedString = union(ManagedStringTag) {
     Owned: AllocatedString,
     Const: []const u8,
@@ -500,11 +502,13 @@ pub fn pb_dupe(comptime T: type, original: T, allocator: Allocator) !T {
 
 /// Generic function to deeply duplicate a message using a new allocator, with only values and no methods attached
 
+
 pub fn pb_dupe_struct_only(comptime T: type, original: T, allocator: Allocator) !T._data_struct {
     var result: T._data_struct = undefined;
 
     inline for (@typeInfo(T._data_struct).Struct.fields) |field| {
-        @field(result, field.name) = try dupe_field_data_only(original, field.name, @field(T._desc_table, field.name).ftype, allocator, field.type);
+        const fType = @field(T._desc_table, field.name).ftype;
+        @field(result, field.name) = try dupe_field_data_only(original, field.name, fType, allocator, field.type);
     }
 
     return result;
@@ -553,20 +557,37 @@ fn dupe_field_data_only(original: anytype, comptime field_name: []const u8, comp
                 else => return try @field(original, field_name).dupe_struct_only(allocator),
             }
         },
-        .String => {
+        .Bytes => {
             switch (@typeInfo(@TypeOf(@field(original, field_name)))) {
                 .Optional => {
                     if (@field(original, field_name)) |val| {
                         const duped = try val.dupe(allocator);
 
-                        return duped.getSlice();
+                        return StringOrArrayFlag{ .data = duped.getSlice(), .isString = false };
                     } else {
                         return null;
                     }
                 },
                 else => {
                     const duped = try @field(original, field_name).dupe(allocator);
-                    return duped.getSlice();
+                    return StringOrArrayFlag{ .data = duped.getSlice(), .isString = false };
+                },
+            }
+        },
+        .String => {
+            switch (@typeInfo(@TypeOf(@field(original, field_name)))) {
+                .Optional => {
+                    if (@field(original, field_name)) |val| {
+                        const duped = try val.dupe(allocator);
+
+                        return StringOrArrayFlag{ .data = duped.getSlice(), .isString = true };
+                    } else {
+                        return null;
+                    }
+                },
+                else => {
+                    const duped = try @field(original, field_name).dupe(allocator);
+                    return StringOrArrayFlag{ .data = duped.getSlice(), .isString = true };
                 },
             }
         },

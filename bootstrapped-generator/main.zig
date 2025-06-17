@@ -367,7 +367,7 @@ const GenerationContext = struct {
         if(struct_only){
             switch(t){
                 .TYPE_STRING, .TYPE_BYTES => {
-                    return try std.mem.concat(allocator, u8, &.{ prefix, "[]const u8", postfix });
+                    return try std.mem.concat(allocator, u8, &.{ prefix, "protobuf.StringOrArrayFlag", postfix });
                 },
                 .TYPE_MESSAGE => {
                     return try std.mem.concat(allocator, u8, &.{ prefix, infix, "._data_struct", postfix });
